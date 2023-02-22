@@ -27,6 +27,7 @@ void SetConsoleColor() {
 		if (i < 29)
 			cout << endl;
 	}
+	GotoXY(0, 0);
 }
 
 void DrawTableLine(int numOfCol, char mainSym, char subSym, int width) {

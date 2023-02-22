@@ -5,8 +5,11 @@
 using namespace std;
 
 int main() {
+	FixConsoleWindow();
 	SetConsoleColor();
 	TextColor(BLUE);
+	cout << TOP_CROSS;
+	return 0;
 	/*GotoXY(5, 5);
 	cout << TOP_LEFT << H_LINE << H_LINE << H_LINE << TOP_RIGHT;
 	GotoXY(5, 6);
