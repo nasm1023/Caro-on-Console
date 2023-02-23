@@ -1,7 +1,4 @@
 #include "Control.h"
-
-void Menu() {
-	while (true) {
-
-	}
-}
+#include <conio.h>
+#include <cctype>
+#include "Data.h"
