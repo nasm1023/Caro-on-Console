@@ -4,7 +4,10 @@
 
 int main() {
 	FixConsoleWindow();
-	SetConsoleColor();
-	MainMenu();
+	SetConsoleBlank();
+	//MainMenu();
+	DrawBoard(B_SIZE, B_SIZE, 5, 2, CYAN);
+
+	GotoXY(0, 28);
 	return 0;
 }

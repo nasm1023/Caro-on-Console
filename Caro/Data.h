@@ -32,23 +32,25 @@ using namespace std;
 #define LIGHT_MAGENTA ((15 << 4) | 13)
 #define LIGHT_YELLOW ((15 << 4) | 14)
 #define BRIGHT_WHITE ((15 << 4) | 15)
+#define X_COLOR RED
+#define O_COLOR BLUE
 
 // ASCII code
 // special key
 #define ENTER 13
 #define ESC 27
 // for drawing the caro table
-#define BOARD_H_LINE (char)196
-#define BOARD_V_LINE (char)179
-#define BOARD_CROSS (char)197
-#define BOARD_TOP_LEFT (char)218
-#define BOARD_TOP_RIGHT (char)191
-#define BOARD_BOTTOM_LEFT (char)192
-#define BOARD_BOTTOM_RIGHT (char)217
-#define BOARD_TOP_CROSS (char)194
-#define BOARD_BOTTOM_CROSS (char)193
-#define	BOARD_LEFT_CROSS (char)195
-#define BOARD_RIGHT_CROSS (char)180
+#define H_LINE (char)196
+#define V_LINE (char)179
+#define CROSS (char)197
+#define TOP_LEFT (char)218
+#define TOP_RIGHT (char)191
+#define BOTTOM_LEFT (char)192
+#define BOTTOM_RIGHT (char)217
+#define TOP_CROSS (char)194
+#define BOTTOM_CROSS (char)193
+#define	LEFT_CROSS (char)195
+#define RIGHT_CROSS (char)180
 // for drawing boxes (menu, etc.)
 #define BOX_TOP_LEFT (char)201
 #define BOX_TOP_RIGHT (char)187
