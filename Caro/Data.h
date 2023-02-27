@@ -1,4 +1,7 @@
 #pragma once
+#pragma comment(lib, "winmm.lib")
+
+#define BGM TEXT("")
 
 // Included libraries
 #include <iostream>
