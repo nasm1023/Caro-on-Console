@@ -1,7 +1,9 @@
 #pragma once
 #pragma comment(lib, "winmm.lib")
 
-#define BGM TEXT("")
+#define BGM TEXT("assets\\sounds\\Wallpaper.wav")
+#define CLICK_SFX TEXT("assets\\sounds\\click_sfx.wav")
+#define WIN_SFX TEXT("assets\\sounds\\win_sfx.wav")
 
 // Included libraries
 #include <iostream>

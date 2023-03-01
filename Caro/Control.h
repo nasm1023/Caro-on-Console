@@ -1,3 +1,3 @@
 #pragma once
 
-void PlaySound(string dir);
+void StopSound();
