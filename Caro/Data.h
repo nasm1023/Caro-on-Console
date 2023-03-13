@@ -39,6 +39,7 @@ using namespace std;
 #define BRIGHT_WHITE ((15 << 4) | 15)
 #define X_COLOR RED
 #define O_COLOR BLUE
+#define BACKGROUND_YELLOW (14 << 4)
 
 // ASCII code
 // special key
@@ -71,9 +72,34 @@ using namespace std;
 // others
 #define SPACE (char)32
 
+// Data cua Man
+#define Color_BLACK      0
+#define Color_DarkBlue  1
+#define Color_DarkGreen  2
+#define Color_DarkCyan  3
+#define Color_DarkRed  4
+#define Color_DarkPink  5
+#define Color_DarkYellow 6
+#define Color_DarkWhite  7
+#define Color_Grey   8
+#define Color_Blue   9
+#define Color_Green   10
+#define Color_Cyan   11
+#define Color_Red   12
+#define Color_Pink   13
+#define Color_Yellow  14
+#define Color_White   15
+#define key_Up  1072
+#define key_Down 1080
+#define key_Left 1075
+#define key_Right 1077
+#define key_none -1
+#define LEFT 1
+#define TOP 1
+
 // Data types
 struct _POINT {
-	int x, y, p;
+	int x, y, c;
 	// x, y: coordinate
 	// p -> {0, 1, 2}, 0: vacant, 1: player X, 2: player O
 };

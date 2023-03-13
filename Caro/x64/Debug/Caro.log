@@ -1,2 +1,8 @@
-﻿  Source.cpp
+﻿  Control.cpp
+  Data.cpp
+  Model.cpp
+  Source.cpp
+  View.cpp
+D:\Code\Caro\Caro\View.cpp(612,6): warning C4101: 'i': unreferenced local variable
+  Generating Code...
   Caro.vcxproj -> D:\Code\Caro\x64\Debug\Caro.exe
