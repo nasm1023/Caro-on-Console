@@ -1,4 +1,7 @@
 #include "Data.h"
+#include "Control.h"
+#include "View.h"
+#include "Model.h"
 
 void StopSound() {
 	PlaySound(NULL, 0, SND_PURGE);
@@ -50,3 +53,51 @@ int whereY()
 	return -1;
 }
 
+void MoveRight(_POINT _A[B_SIZE][B_SIZE], int& _X, int& _Y, int& cX, int& cY)
+{
+	if (_X < _A[B_SIZE - 1][B_SIZE - 1].x)
+	{
+		GotoXY(_X, _Y);
+		UnHover(_A, cX, cY);
+		_X += 4;
+		cX++;
+		GotoXY(_X, _Y);
+		Hover(_A, cX, cY);
+	}
+}
+
+void MoveLeft(_POINT _A[B_SIZE][B_SIZE], int& _X, int& _Y, int& cX, int& cY) {
+	if (_X > _A[0][0].x)
+	{
+		GotoXY(_X, _Y);
+		UnHover(_A, cX, cY);
+		_X -= 4;
+		cX--;
+		GotoXY(_X, _Y);
+		Hover(_A, cX, cY);
+	}
+}
+
+void MoveUp(_POINT _A[B_SIZE][B_SIZE], int& _X, int& _Y, int& cX, int& cY) {
+	if (_Y > _A[0][0].y)
+	{
+		GotoXY(_X, _Y);
+		UnHover(_A, cX, cY);
+		_Y -= 2;
+		cY--;
+		GotoXY(_X, _Y);
+		Hover(_A, cX, cY);
+	}
+}
+
+void MoveDown(_POINT _A[B_SIZE][B_SIZE], int& _X, int& _Y, int& cX, int& cY) {
+	if (_Y < _A[B_SIZE - 1][B_SIZE - 1].y)
+	{
+		GotoXY(_X, _Y);
+		UnHover(_A, cX, cY);
+		_Y += 2;
+		cY++;
+		GotoXY(_X, _Y);
+		Hover(_A, cX, cY);
+	}
+}

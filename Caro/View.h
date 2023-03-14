@@ -1,8 +1,5 @@
 #pragma once
-#include <Windows.h>
-#include "Data.cpp"
-#include <iostream>
-using namespace std;
+#include "Data.h"
 
 void FixConsoleWindow();
 void SetConsoleBlank();
@@ -20,24 +17,12 @@ void DrawButton();
 void CaroAnimation();
 void MainScreen();
 void MainMenu();
-void StartGame();
-void resetData();
-int processFinish(int pWhoWin);
-char askContinue();
-void drawBoard(int pSize);
-int checkBoard(int pX, int pY);
-void askTurn();
-void cntTurn(bool validEnter);
-void showTurn(bool validEnter);
-bool checkFullBoard();
-int testBoard(bool check);
-void MoveRight();
-void MoveLeft();
-void MoveUp();
-void MoveDown();
-void UnHover(int x, int y);
-void Hover(int x, int y);
-void setupGame();
-bool checkWin(int x, int y);
+int ProcessFinish(_POINT _A[B_SIZE][B_SIZE], int& _X, int& _Y, bool& _TURN, int pWhoWin);
+char AskContinue(_POINT _A[B_SIZE][B_SIZE]);
+void AskTurn(bool& _TURN);
+void CntTurn(bool& _TURN, int& cntX, int& cntO, bool validEnter);
+void ShowTurn(int _X, int _Y, bool _TURN, bool validEnter);
+void UnHover(_POINT _A[B_SIZE][B_SIZE], int x, int y);
+void Hover(_POINT _A[B_SIZE][B_SIZE], int x, int y);
+
 void exitGame();
-bool checkWinLose();
