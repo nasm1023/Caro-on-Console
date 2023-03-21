@@ -1,0 +1,11 @@
+﻿  Control.cpp
+  Data.cpp
+  Model.cpp
+D:\Code\Caro\Caro\Model.cpp(96,6): warning C4101: 'i': unreferenced local variable
+  Source.cpp
+  View.cpp
+D:\Code\Caro\Caro\View.cpp(409,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Code\Caro\Caro\View.cpp(418,9): warning C4018: '<': signed/unsigned mismatch
+D:\Code\Caro\Caro\View.cpp(473,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Generating Code...
+  Caro.vcxproj -> D:\Code\Caro\Debug\Caro.exe

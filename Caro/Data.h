@@ -10,6 +10,9 @@
 #include <cctype>
 #include <Windows.h>
 #include <conio.h>
+#include <fstream>
+#include <vector>
+#include <math.h>
 
 // Namespace
 using namespace std;
@@ -64,6 +67,10 @@ using namespace std;
 #define BOX_BOTTOM_RIGHT (char)188
 #define BOX_V_LINE (char)186
 #define BOX_H_LINE (char)205
+#define BOX_X  WIDTH / 2 - 20
+#define BOX_Y HEIGHT / 2 - 13
+#define BOX_W 40
+#define BOX_H 20
 // moving keys
 #define W 87
 #define A 65

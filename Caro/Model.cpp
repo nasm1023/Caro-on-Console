@@ -90,7 +90,6 @@ bool CheckWin(_POINT _A[B_SIZE][B_SIZE], int x, int y) {
 	return false;
 }
 
-
 // Duyệt toàn BOARD để kiểm tra thắng thua
 bool CheckWinLose(_POINT _A[B_SIZE][B_SIZE], int& saveTurn)
 {
@@ -167,9 +166,8 @@ void StartGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 	SetupGame(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw);
 	bool validEnter = true, ok = 0;
 	while (true) {
-		if (ok)
-			PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
 		_COMMAND = toupper(_getch());
+		PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
 		ok = true;
 		if (_COMMAND == ESC) {
 			exitGame();
@@ -202,8 +200,7 @@ void StartGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 				ShowTurn(_X, _Y, _TURN, validEnter);
 				CntTurn(_TURN, cntX, cntO, validEnter);
 				if (validEnter == true) {
-					switch (ProcessFinish(_A, _X, _Y, _TURN, TestBoard(_A, saveTurn, cntWinO, cntLoseO, cntDraw, CheckWinLose(_A, saveTurn))))
-					{
+					switch (ProcessFinish(_A, _X, _Y, _TURN, TestBoard(_A, saveTurn, cntWinO, cntLoseO, cntDraw, CheckWinLose(_A, saveTurn)))) {
 					case -1:
 					case 1:
 					case 0:
@@ -222,5 +219,17 @@ void StartGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 			else if (_COMMAND == 'S') MoveDown(_A, _X, _Y, cX, cY);
 			else if (_COMMAND == 'D') MoveRight(_A, _X, _Y, cX, cY);
 		}
+	}
+}
+
+void LoadData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, string FileName) {
+	fstream inp;
+	inp.open("save\\data\\" + FileName, ios::in);
+	if (inp.fail()) {
+		cout << "Can't open file";
+		return;
+	}
+	else {
+
 	}
 }
