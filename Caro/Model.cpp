@@ -219,22 +219,27 @@ void StartGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 bool LoadData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, string FileName) {
 	fstream inp;
 	inp.open("save\\data\\" + FileName, ios::in);
-	if (inp.fail()) 
+	if (inp.fail()) {
+		inp.close();
 		return 0;
+	}
 	ResetData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO);
 	for (int i = 0; i < B_SIZE; i++)
 		for (int j = 0; j < B_SIZE; j++)
 			inp >> _A[i][j].c;
 	inp >> _TURN >> _COMMAND >> _X >> _Y >> cX >> cY;
 	inp >> cntX >> cntO >> cntWinO >> cntLoseO >> cntDraw >> saveTurn;
+	inp.close();
 	return 1;
 }
 
 bool SaveData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, string FileName) {
 	fstream out;
 	out.open("save\\data\\" + FileName, ios::out);
-	if (out.fail()) 
+	if (out.fail()) {
+		out.close();
 		return 0;
+	}
 	for (int i = 0; i < B_SIZE; i++) {
 		for (int j = 0; j < B_SIZE; j++)
 			out << _A[i][j].c << ' ';
@@ -242,5 +247,6 @@ bool SaveData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, in
 	}
 	out << _TURN << ' ' << _COMMAND << ' ' << _X << ' ' << _Y << ' ' << cX << ' ' << cY << endl;
 	out << cntX << ' ' << cntO << ' ' << cntWinO << ' ' << cntLoseO << ' ' << cntDraw << ' ' << saveTurn;
+	out.close();
 	return 1;
 }
