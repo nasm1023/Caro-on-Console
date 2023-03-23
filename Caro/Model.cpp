@@ -7,8 +7,8 @@ void ResetData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 {//ham khoi tao du lieu mac dinh ban dau cho ban co
 	for (int i = 0; i < B_SIZE; i++) {
 		for (int j = 0; j < B_SIZE; j++) {
-			_A[i][j].x = i * 4 + LEFT + 6;
-			_A[i][j].y = j * 2 + TOP + 2;
+			_A[i][j].y = i * 2 + 3;
+			_A[i][j].x = j * 4 + 7;
 			_A[i][j].c = 0;
 		}
 	}
@@ -91,17 +91,12 @@ bool CheckWin(_POINT _A[B_SIZE][B_SIZE], int x, int y) {
 }
 
 // Duyệt toàn BOARD để kiểm tra thắng thua
-bool CheckWinLose(_POINT _A[B_SIZE][B_SIZE], int& saveTurn)
+bool CheckWinLose(_POINT _A[B_SIZE][B_SIZE], int& saveTurn, int cX, int cY)
 {
-	int i, j;
-	for (int i = 0; i < B_SIZE; i++) {
-		for (j = 0; j < B_SIZE; j++) {
-			if (CheckWin(_A, j, i) == true)
-			{
-				saveTurn = _A[i][j].c;
-				return true;
-			}
-		}
+	if (CheckWin(_A, cX, cY) == true)
+	{
+		saveTurn = _A[cY][cX].c;
+		return true;
 	}
 	return false;
 }
@@ -158,8 +153,7 @@ void SetupGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 	cout << cntWinO << "/" << cntLoseO << "/" << cntDraw;
 	GotoXY(90, 2);
 	cout << cntLoseO << "/" << cntWinO << "/" << cntDraw;
-	GotoXY(_A[0][0].x, _A[0][0].y);
-	Hover(_A, cX, cY);
+	Hover(_A, cY, cX);
 }
 
 void StartGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn) {
@@ -167,7 +161,7 @@ void StartGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 	bool validEnter = true, ok = 0;
 	while (true) {
 		_COMMAND = toupper(_getch());
-		PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
+		//PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
 		ok = true;
 		if (_COMMAND == ESC) {
 			exitGame();
@@ -200,7 +194,7 @@ void StartGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 				ShowTurn(_X, _Y, _TURN, validEnter);
 				CntTurn(_TURN, cntX, cntO, validEnter);
 				if (validEnter == true) {
-					switch (ProcessFinish(_A, _X, _Y, _TURN, TestBoard(_A, saveTurn, cntWinO, cntLoseO, cntDraw, CheckWinLose(_A, saveTurn)))) {
+					switch (ProcessFinish(_A, _X, _Y, _TURN, TestBoard(_A, saveTurn, cntWinO, cntLoseO, cntDraw, CheckWinLose(_A, saveTurn, cX, cY)))) {
 					case -1:
 					case 1:
 					case 0:
@@ -222,14 +216,31 @@ void StartGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 	}
 }
 
-void LoadData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, string FileName) {
+bool LoadData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, string FileName) {
 	fstream inp;
 	inp.open("save\\data\\" + FileName, ios::in);
-	if (inp.fail()) {
-		cout << "Can't open file";
-		return;
-	}
-	else {
+	if (inp.fail()) 
+		return 0;
+	ResetData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO);
+	for (int i = 0; i < B_SIZE; i++)
+		for (int j = 0; j < B_SIZE; j++)
+			inp >> _A[i][j].c;
+	inp >> _TURN >> _COMMAND >> _X >> _Y >> cX >> cY;
+	inp >> cntX >> cntO >> cntWinO >> cntLoseO >> cntDraw >> saveTurn;
+	return 1;
+}
 
+bool SaveData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, string FileName) {
+	fstream out;
+	out.open("save\\data\\" + FileName, ios::out);
+	if (out.fail()) 
+		return 0;
+	for (int i = 0; i < B_SIZE; i++) {
+		for (int j = 0; j < B_SIZE; j++)
+			out << _A[i][j].c << ' ';
+		out << endl;
 	}
+	out << _TURN << ' ' << _COMMAND << ' ' << _X << ' ' << _Y << ' ' << cX << ' ' << cY << endl;
+	out << cntX << ' ' << cntO << ' ' << cntWinO << ' ' << cntLoseO << ' ' << cntDraw << ' ' << saveTurn;
+	return 1;
 }

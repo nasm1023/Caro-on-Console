@@ -357,6 +357,7 @@ void ShowTurn(int _X, int _Y, bool _TURN, bool validEnter)
 void UnHover(_POINT _A[B_SIZE][B_SIZE], int x, int y) {
 	int tmp = GetCurrentColor();
 	TextColor(BLUE);
+	GotoXY(_A[x][y].x, _A[x][y].y);
 	if (_A[x][y].c == 0)
 		cout << " ";
 	else if (_A[x][y].c == 1) {
@@ -373,6 +374,7 @@ void UnHover(_POINT _A[B_SIZE][B_SIZE], int x, int y) {
 void Hover(_POINT _A[B_SIZE][B_SIZE], int x, int y) {
 	int tmp = GetCurrentColor();
 	TextColor(BLUE & 15 | BACKGROUND_YELLOW);
+	GotoXY(_A[x][y].x, _A[x][y].y);
 	if (_A[x][y].c == 0)
 		cout << " ";
 	else if (_A[x][y].c == 1) {
@@ -401,6 +403,8 @@ void HideCursor() {
 
 void DrawPage(const vector <string>& v, int curPage) {
 	int filePerPage = 9;
+	int tmp = GetCurrentColor();
+	TextColor(YELLOW);
 	GotoXY(WIDTH / 2 - 5, HEIGHT / 2 + 8);
 	cout << "< ";
 	if (curPage <= 9)
@@ -410,6 +414,7 @@ void DrawPage(const vector <string>& v, int curPage) {
 	if (nPages <= 9)
 		cout << 0;
 	cout << nPages << " >";
+	TextColor(tmp);
 
 	for (int i = (curPage - 1) * 9, cnt = 1; i < curPage * 9; i++, cnt++) {
 		GotoXY(BOX_X + 1, BOX_Y + 2 * cnt - 1);
@@ -440,8 +445,10 @@ void HoverFileName(const vector <string>& v, int curPage, int curFile) {
 	int tmp = GetCurrentColor();
 	TextColor(RED & 15 | BACKGROUND_YELLOW);
 	GotoXY(BOX_X + 1, BOX_Y + 2 * (curFile + 1) - 1);
-	for (int j = 1; j < BOX_W - 1; j++)
+	cout << "     --->";
+	for (int j = 9; j < BOX_W - 11; j++) 
 		cout << " ";
+	cout << "<---     ";
 	int n = v[id].size();
 	GotoXY(WIDTH / 2 - n / 2, BOX_Y + 2 * (curFile + 1) - 1);
 	cout << v[id];

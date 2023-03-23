@@ -6,7 +6,7 @@ void SetConsoleBlank();
 void DrawBoard(int row, int col, int x, int y, int color);
 void TextColor(int x);
 int GetCurrentColor();
-void DrawBox(int w, int h, int x, int y, int color, bool delay);
+void DrawBox(int w, int h, int x, int y, int color);
 void PrintCARO(int x, int y, int color);
 void PrintNote(int x, int y, int color);
 void DrawHeart(int x, int y, int color);

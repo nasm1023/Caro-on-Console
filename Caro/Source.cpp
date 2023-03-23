@@ -16,13 +16,11 @@ int cntDraw = 0;
 int main() {
 	HideCursor();
 	FixConsoleWindow();
-	LoadMenu(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn);
-	//string tmp = "test.txt";
-	//LoadData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, tmp);
-	_getch();
-	return 0;
-	MainMenu();
-	_getch();
+	//LoadMenu(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn);
+	//string tmp = "test2.txt";
+	//SaveData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, tmp);
+	//MainMenu();
+	//_getch();
 	StartGame(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn);
 	return 0;
 }
