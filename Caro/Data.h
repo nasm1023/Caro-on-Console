@@ -60,11 +60,15 @@ using namespace std;
 #define BOTTOM_CROSS (char)193
 #define	LEFT_CROSS (char)195
 #define RIGHT_CROSS (char)180
+#define L_TRIANGLE ((unsigned char)16)
+#define R_TRIANGLE ((unsigned char)17)
 // for drawing boxes (menu, etc.)
 #define BOX_TOP_LEFT (char)201
 #define BOX_TOP_RIGHT (char)187
 #define BOX_BOTTOM_LEFT (char)200
 #define BOX_BOTTOM_RIGHT (char)188
+#define BOX_RIGHT (char)185
+#define BOX_LEFT (char)204
 #define BOX_V_LINE (char)186
 #define BOX_H_LINE (char)205
 #define BOX_X  WIDTH / 2 - 20
@@ -78,31 +82,7 @@ using namespace std;
 #define D 68
 // others
 #define SPACE (char)32
-
-// Data cua Man
-#define Color_BLACK      0
-#define Color_DarkBlue  1
-#define Color_DarkGreen  2
-#define Color_DarkCyan  3
-#define Color_DarkRed  4
-#define Color_DarkPink  5
-#define Color_DarkYellow 6
-#define Color_DarkWhite  7
-#define Color_Grey   8
-#define Color_Blue   9
-#define Color_Green   10
-#define Color_Cyan   11
-#define Color_Red   12
-#define Color_Pink   13
-#define Color_Yellow  14
-#define Color_White   15
-#define key_Up  1072
-#define key_Down 1080
-#define key_Left 1075
-#define key_Right 1077
 #define key_none -1
-#define LEFT 1
-#define TOP 1
 
 // Data types
 struct _POINT {

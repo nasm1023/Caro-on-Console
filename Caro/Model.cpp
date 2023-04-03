@@ -161,7 +161,7 @@ void StartGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 	bool validEnter = true, ok = 0;
 	while (true) {
 		_COMMAND = toupper(_getch());
-		//PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
 		ok = true;
 		if (_COMMAND == ESC) {
 			exitGame();
