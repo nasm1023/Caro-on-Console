@@ -72,35 +72,69 @@ void DrawBoard(int r, int c, int x, int y, int color) {
 	TextColor(tmp);
 }
 
-void DrawBoxWithAnimation(int w, int h, int x, int y, int color) {
+//void DrawBox(int w, int h, int x, int y, int color, int Time) {
+//	TextColor(color);
+//	GotoXY(x, y);
+//	cout << BOX_TOP_LEFT;
+//	for (int i = 1; i < w - 1; i++)
+//	{
+//		cout << BOX_H_LINE;
+//		Sleep(Time);
+//	}
+//
+//	cout << BOX_TOP_RIGHT;
+//
+//	for (int i = 1; i < h - 1; i++) {
+//		GotoXY(x, i + y);
+//		cout << BOX_V_LINE;
+//		for (int j = 1; j < w - 1; j++)
+//			cout << SPACE;
+//		cout << BOX_V_LINE;
+//		Sleep(Time);
+//	}
+//
+//	GotoXY(x, h + y - 1);
+//	cout << BOX_BOTTOM_LEFT;
+//	for (int i = w - 1; i > 1; i--)
+//	{
+//		cout << BOX_H_LINE;
+//		Sleep(Time);
+//	}
+//	cout << BOX_BOTTOM_RIGHT;
+//}
+
+void DrawBox(int w, int h, int x, int y, int color, int Time) {
 	TextColor(color);
+	for (int i = 0; i < w / 2; i++) {
+		GotoXY(x + w / 2 - i, y);
+		cout << BOX_H_LINE;
+		GotoXY(x + w / 2 + i, y);
+		cout << BOX_H_LINE;
+		Sleep(Time);
+	}
 	GotoXY(x, y);
 	cout << BOX_TOP_LEFT;
-	for (int i = 1; i < w - 1; i++)
-	{
-		cout << BOX_H_LINE;
-		Sleep(5);
-	}
-
+	GotoXY(x + w, y);
 	cout << BOX_TOP_RIGHT;
-
 	for (int i = 1; i < h - 1; i++) {
-		GotoXY(x, i + y);
+		GotoXY(x, y + i);
 		cout << BOX_V_LINE;
-		for (int j = 1; j < w - 1; j++)
+		for (int j = 1; j < w; j++)
 			cout << SPACE;
 		cout << BOX_V_LINE;
-		Sleep(5);
+		Sleep(Time);
 	}
-
-	GotoXY(x, h + y - 1);
+	GotoXY(x, y + h - 1);
 	cout << BOX_BOTTOM_LEFT;
-	for (int i = w - 1; i > 1; i--)
-	{
-		cout << BOX_H_LINE;
-		Sleep(5);
-	}
+	GotoXY(x + w, y + h - 1);
 	cout << BOX_BOTTOM_RIGHT;
+	for (int i = w / 2 - 1; i >= 0; i--) {
+		GotoXY(x + w / 2 - i, y + h - 1);
+		cout << BOX_H_LINE;
+		GotoXY(x + w / 2 + i, y + h - 1);
+		cout << BOX_H_LINE;
+		Sleep(Time);
+	}
 }
 
 //update
@@ -343,9 +377,9 @@ void Hover(_POINT _A[B_SIZE][B_SIZE], int x, int y) {
 	TextColor(tmp);
 }
 
-// Hàm reset game
-void exitGame() {
-	system("cls");
+void ExitGame() {
+	SetConsoleBlank();
+	exit(0);
 }
 
 void HideCursor() {
@@ -356,7 +390,7 @@ void HideCursor() {
 	SetConsoleCursorInfo(consoleHandle, &info);
 }
 
-void DrawPage(const vector <string>& v, int curPage) {
+void DrawSaveFilesPage(const vector <string>& v, int curPage) {
 	int filePerPage = 9;
 	int tmp = GetCurrentColor();
 	TextColor(YELLOW);
@@ -421,7 +455,7 @@ void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X
 
 	SetConsoleBlank();
 	BackGround();
-	DrawBoxWithAnimation(BOX_W, BOX_H - 1, BOX_X, BOX_Y, GREEN);
+	DrawBox(BOX_W, BOX_H - 1, BOX_X, BOX_Y, GREEN, 1);
 	TextColor(CYAN);
 
 	// Get the current save data
@@ -435,7 +469,7 @@ void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X
 	int nPages = ceil(1.0 * nFiles / filePerPage);
 
 	int curFile = 0, curPage = 1;
-	DrawPage(v, 1);
+	DrawSaveFilesPage(v, 1);
 	GotoXY(47, 26);
 	TextColor(MAGENTA);
 	cout << " " << L_TRIANGLE << " PRESS ESC TO COMEBACK " << R_TRIANGLE << " ";
@@ -466,7 +500,7 @@ void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X
 				curPage = nPages;
 			if (curPage == nPages && curFile + 9 * (curPage - 1) >= nFiles)
 				curFile = nFiles % 9 - 1;
-			DrawPage(v, curPage);
+			DrawSaveFilesPage(v, curPage);
 			HoverFileName(v, curPage, curFile);
 		}
 		else if (_COMMAND == 'D') {
@@ -475,7 +509,7 @@ void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X
 				curFile = nFiles % 9 - 1;
 			else if (curPage > nPages)
 				curPage = 1;
-			DrawPage(v, curPage);
+			DrawSaveFilesPage(v, curPage);
 			HoverFileName(v, curPage, curFile);
 		}
 		else if (_COMMAND == ENTER) {
@@ -486,28 +520,73 @@ void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X
 	inp.close();
 }
 
-void MainScreen() {
-	BackGround();
-	DrawBoxWithAnimation(62, 19, 12, 5, GREEN);
-	Sleep(200);
+void DrawCaroBox(int w, int h, int x, int y, int Time)
+{
+	TextColor(GREEN);
+	GotoXY(x + w / 2, y);
+	for (int i = 0; i < w / 2; i++)
+	{
+		GotoXY(x + w / 2 + i, y);
+		cout << BOX_H_LINE;
+		GotoXY(x + w / 2 - i, y);
+		cout << BOX_H_LINE;
+		Sleep(Time);
+	}
+	GotoXY(x, y);
+	cout << BOX_TOP_LEFT;
+	GotoXY(x + w, y);
+	cout << BOX_TOP_RIGHT;
+
+	for (int i = 1; i < h - 1; i++) {
+		GotoXY(x, i + y);
+		cout << BOX_V_LINE;
+		for (int j = 1; j < w; j++)
+			cout << SPACE;
+		cout << BOX_V_LINE;
+		Sleep(Time);
+	}
+
+	GotoXY(x, h + y - 1);
+	cout << BOX_BOTTOM_LEFT;
+	GotoXY(x + w, h + y - 1);
+	cout << BOX_BOTTOM_RIGHT;
+	GotoXY(x, y + h - 5);
+	cout << BOX_LEFT;
+	GotoXY(x + w, y + h - 5);
+	cout << BOX_RIGHT;
+	for (int i = 1; i <= w / 2; i++)
+	{
+		GotoXY(x + i, y + h - 1);
+		cout << BOX_H_LINE;
+		GotoXY(x + w - i, y + h - 1);
+		cout << BOX_H_LINE;
+		GotoXY(x + i, y + h - 5);
+		cout << BOX_H_LINE;
+		GotoXY(x + w - i, y + h - 5);
+		cout << BOX_H_LINE;
+		Sleep(Time);
+	}
 	DrawBoxMini(58, 13, 14, 6, LIGHT_YELLOW);
 	CaroAnimation();
-	GotoXY(13, 19);
-	TextColor(LIGHT_GREEN);
-	for (int i = 0; i < 60; i++)
-	{
-		cout << H_LINE;
-	}
 	Sleep(500);
 	PrintNote(23, 21, MAGENTA);
+}
+
+void MainScreen() {
+	BackGround();
+	DrawCaroBox(62, 19, 12, 5, 5);
 	Sleep(500);
 	DrawButton();
 }
 
 void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn)
 {
+	LoadingScreen(BLUE, GREEN, LIGHT_CYAN);
+	Sleep(50);
 	SetConsoleBlank();
+	BackGround();
 	MainScreen();
+
 	int x = 94;
 	int y = 7;
 	DrawBoxMini(14, 3, 89, y - 1, RED);
@@ -515,12 +594,12 @@ void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, in
 	cout << "PLAY";
 	while (true)
 	{
-		char c = _getch();
+		unsigned char c = toupper(_getch());
 		PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
-		if (c == -32)
+		if (c == 'W' || c == 'S')
 		{
-			c = _getch();
-			if (c == 72)
+			//c = _getch();
+			if (c == 'W')
 			{
 				if ((y >= 10) && (y <= 19))
 				{
@@ -584,7 +663,7 @@ void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, in
 
 				}
 			}
-			else if (c == 80)
+			else if (c == 'S')
 			{
 				if ((y >= 7) && (y <= 16))
 				{
@@ -677,7 +756,8 @@ void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, in
 			}
 			if (y == 19)
 			{
-				exit(0); // Nhan 2 lan de Thoat Game
+				//exit(0); // Nhan 2 lan de Thoat Game
+				ExitGame();
 			}
 		}
 	}
@@ -743,38 +823,10 @@ void Help2()
 	cout << " " << L_TRIANGLE << " PRESS ESC TO COMEBACK " << R_TRIANGLE << " ";
 }
 
-void DrawBoxNoAnimation(int w, int h, int x, int y, int color) {
-	TextColor(color);
-	GotoXY(x, y);
-	cout << BOX_TOP_LEFT;
-	for (int i = 1; i < w - 1; i++)
-	{
-		cout << BOX_H_LINE;
-	}
-
-	cout << BOX_TOP_RIGHT;
-
-	for (int i = 1; i < h - 1; i++) {
-		GotoXY(x, i + y);
-		cout << BOX_V_LINE;
-		for (int j = 1; j < w - 1; j++)
-			cout << SPACE;
-		cout << BOX_V_LINE;
-	}
-
-	GotoXY(x, h + y - 1);
-	cout << BOX_BOTTOM_LEFT;
-	for (int i = w - 1; i > 1; i--)
-	{
-		cout << BOX_H_LINE;
-	}
-	cout << BOX_BOTTOM_RIGHT;
-}
-
 void HelpScreen()
 {
 	SetConsoleBlank();
-	DrawBoxNoAnimation(98, 25, 11, 2, CYAN);
+	DrawBox(98, 25, 11, 2, CYAN, 0);
 	DrawBoxMini(94, 23, 13, 3, LIGHT_CYAN);
 	for (int i = 0; i < 21; i++)
 	{

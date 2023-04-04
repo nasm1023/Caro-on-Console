@@ -164,8 +164,7 @@ void StartGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 		PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
 		ok = true;
 		if (_COMMAND == ESC) {
-			exitGame();
-			break;
+			return;
 		}
 		else {
 			// Điều khiển
@@ -199,7 +198,7 @@ void StartGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 					case 1:
 					case 0:
 						if (AskContinue(_A) != 'Y') {
-							exitGame();
+							ExitGame();
 							return;
 						}
 						else 
