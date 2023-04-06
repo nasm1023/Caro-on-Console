@@ -23,6 +23,8 @@ using namespace std;
 
 // Board size
 #define B_SIZE 12
+#define BOARD_X 5
+#define BOARD_Y 2
 
 // Color code
 #define BLUE ((15 << 4) | 1)
@@ -60,8 +62,8 @@ using namespace std;
 #define BOTTOM_CROSS (char)193
 #define	LEFT_CROSS (char)195
 #define RIGHT_CROSS (char)180
-#define L_TRIANGLE ((unsigned char)16)
-#define R_TRIANGLE ((unsigned char)17)
+#define L_TRIANGLE ((char)16)
+#define R_TRIANGLE ((char)17)
 // for drawing boxes (menu, etc.)
 #define BOX_TOP_LEFT (char)201
 #define BOX_TOP_RIGHT (char)187
@@ -88,5 +90,5 @@ using namespace std;
 struct _POINT {
 	int x, y, c;
 	// x, y: coordinate
-	// p -> {0, 1, 2}, 0: vacant, 1: player X, 2: player O
+	// c -> {0, 1, 2}, 0: vacant, 1: player X, 2: player O
 };

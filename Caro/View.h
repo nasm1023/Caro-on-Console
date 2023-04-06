@@ -36,3 +36,4 @@ void HelpScreen();
 void LoadingScreen(int color1, int color2, int color3);
 void PrintNote(int x, int y, int color);
 void DrawCaroBox(int w, int h, int x, int y, int Time);
+void CreateConsoleWindow(int pWidth, int pHeight);

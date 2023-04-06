@@ -513,8 +513,10 @@ void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X
 			HoverFileName(v, curPage, curFile);
 		}
 		else if (_COMMAND == ENTER) {
-			//LoadData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, v[(curPage - 1) * 9 + curFile]);
-			//StartGame(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn);
+			LoadData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, v[(curPage - 1) * 9 + curFile]);
+			LoadingScreen(BLUE, GREEN, LIGHT_CYAN);
+			StartGame(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn);
+			return;
 		}
 	}
 	inp.close();
@@ -866,4 +868,16 @@ void LoadingScreen(int color1, int color2, int color3) //color 1 la mau khung, 2
 		cout << s;
 		Sleep(10);
 	}
+}
+
+void CreateConsoleWindow(int pWidth, int pHeight)
+{
+	HWND consoleWindow = GetConsoleWindow();
+	RECT r;
+	HANDLE hConsole;
+
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, 240);
+	GetWindowRect(consoleWindow, &r);
+	MoveWindow(consoleWindow, 0, 0, pWidth, pHeight, TRUE);
 }

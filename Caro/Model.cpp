@@ -7,8 +7,8 @@ void ResetData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 {//ham khoi tao du lieu mac dinh ban dau cho ban co
 	for (int i = 0; i < B_SIZE; i++) {
 		for (int j = 0; j < B_SIZE; j++) {
-			_A[i][j].y = i * 2 + 3;
-			_A[i][j].x = j * 4 + 7;
+			_A[i][j].y = i * 2 + 1 + BOARD_Y;
+			_A[i][j].x = j * 4 + 2 + BOARD_X;
 			_A[i][j].c = 0;
 		}
 	}
@@ -136,7 +136,7 @@ void SetupGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 	AskTurn(_TURN);
 	SetConsoleBlank();
 	TextColor(BLUE);
-	DrawBoard(B_SIZE, B_SIZE, 5, 2, GREEN);
+	DrawBoard(B_SIZE, B_SIZE, BOARD_X, BOARD_Y, GREEN);
 	if (_TURN == true) {
 		GotoXY(80, 0);
 		cout << "Luot cua O danh";

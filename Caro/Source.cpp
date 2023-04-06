@@ -16,6 +16,7 @@ int cntDraw = 0;
 int main() {
 	HideCursor();
 	FixConsoleWindow();
+	SaveData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, "lanngu.txt");
 	while (true) {
 		MainMenu(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn);
 	}
