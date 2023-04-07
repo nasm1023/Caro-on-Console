@@ -153,15 +153,15 @@ void SetupGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 	cout << cntWinO << "/" << cntLoseO << "/" << cntDraw;
 	GotoXY(90, 2);
 	cout << cntLoseO << "/" << cntWinO << "/" << cntDraw;
-	Hover(_A, cY, cX);
+	HoverCell(_A, cY, cX);
 }
 
-void StartGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn) {
+void StartGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& sound, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn) {
 	SetupGame(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw);
 	bool validEnter = true, ok = 0;
 	while (true) {
 		_COMMAND = toupper(_getch());
-		PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
+		if (sound) PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
 		ok = true;
 		if (_COMMAND == ESC) {
 			return;
@@ -248,4 +248,27 @@ bool SaveData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, in
 	out << cntX << ' ' << cntO << ' ' << cntWinO << ' ' << cntLoseO << ' ' << cntDraw << ' ' << saveTurn;
 	out.close();
 	return 1;
+}
+
+void LoadSound(bool& sound) {
+	fstream inp;
+	inp.open(SOUND_PATH, ios::in);
+	if (inp.fail()) {
+		cout << "Can't open file";
+		return;
+	}
+	inp >> sound;
+	inp.close();
+}
+
+void SetSound(bool& sound, bool value) {
+	fstream out;
+	out.open(SOUND_PATH, ios::out);
+	if (out.fail()) {
+		cout << "Can't open file";
+		return;
+	}
+	sound = value;
+	out << sound;
+	out.close();
 }

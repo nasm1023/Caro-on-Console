@@ -343,36 +343,45 @@ void ShowTurn(int _X, int _Y, bool _TURN, bool validEnter)
 	GotoXY(_X, _Y);
 }
 
-void UnHover(_POINT _A[B_SIZE][B_SIZE], int x, int y) {
+void UnHoverCell(_POINT _A[B_SIZE][B_SIZE], int x, int y) {
 	int tmp = GetCurrentColor();
 	TextColor(BLUE);
-	GotoXY(_A[x][y].x, _A[x][y].y);
+	GotoXY(_A[x][y].x - 1, _A[x][y].y);
 	if (_A[x][y].c == 0)
-		cout << " ";
+		cout << "   ";
 	else if (_A[x][y].c == 1) {
 		TextColor(O_COLOR);
-		cout << "O";
+		cout << " O ";
 	}
 	else {
 		TextColor(X_COLOR);
-		cout << "X";
+		cout << " X ";
 	}
 	TextColor(tmp);
 }
 
-void Hover(_POINT _A[B_SIZE][B_SIZE], int x, int y) {
+void HoverCell(_POINT _A[B_SIZE][B_SIZE], int x, int y) {
 	int tmp = GetCurrentColor();
-	TextColor(BLUE & 15 | BACKGROUND_YELLOW);
-	GotoXY(_A[x][y].x, _A[x][y].y);
+	//TextColor(BLUE & 15 | BACKGROUND_YELLOW);
+	TextColor(YELLOW);
+	GotoXY(_A[x][y].x - 1, _A[x][y].y);
 	if (_A[x][y].c == 0)
-		cout << " ";
+		cout << L_TRIANGLE << " " << R_TRIANGLE;
 	else if (_A[x][y].c == 1) {
-		TextColor(O_COLOR & 15 | BACKGROUND_YELLOW);
+		cout << L_TRIANGLE;
+		//TextColor(O_COLOR & 15 | BACKGROUND_YELLOW);
+		TextColor(O_COLOR);
 		cout << "O";
+		TextColor(YELLOW);
+		cout << R_TRIANGLE;
 	}
 	else {
-		TextColor(X_COLOR & 15 | BACKGROUND_YELLOW);
+		cout << L_TRIANGLE;
+		//TextColor(X_COLOR & 15 | BACKGROUND_YELLOW);
+		TextColor(X_COLOR);
 		cout << "X";
+		TextColor(YELLOW);
+		cout << R_TRIANGLE;
 	}
 	TextColor(tmp);
 }
@@ -444,7 +453,7 @@ void HoverFileName(const vector <string>& v, int curPage, int curFile) {
 	TextColor(tmp);
 }
 
-void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn) {
+void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& sound, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn) {
 	// Open the file that contains all the name of the saved games.
 	fstream inp;
 	inp.open("save\\all_save.txt", ios::in);
@@ -476,7 +485,7 @@ void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X
 	HoverFileName(v, 1, 0);
 	while (true) {
 		int _COMMAND = toupper(_getch());
-		PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
+		if (sound) PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
 		if (_COMMAND == ESC) {
 			return;
 		}
@@ -515,7 +524,7 @@ void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X
 		else if (_COMMAND == ENTER) {
 			LoadData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, v[(curPage - 1) * 9 + curFile]);
 			LoadingScreen(BLUE, GREEN, LIGHT_CYAN);
-			StartGame(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn);
+			StartGame(_A, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn);
 			return;
 		}
 	}
@@ -581,7 +590,7 @@ void MainScreen() {
 	DrawButton();
 }
 
-void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn)
+void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& sound, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn)
 {
 	LoadingScreen(BLUE, GREEN, LIGHT_CYAN);
 	Sleep(50);
@@ -597,7 +606,7 @@ void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, in
 	while (true)
 	{
 		unsigned char c = toupper(_getch());
-		PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
+		if (sound) PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
 		if (c == 'W' || c == 'S')
 		{
 			//c = _getch();
@@ -732,33 +741,26 @@ void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, in
 		{
 			if (y == 7)
 			{
-				GotoXY(x, y);
-				//cout << "Vao game";// Chỗ này chạy hàm StartGame là xong
-				StartGame(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn);
+				StartGame(_A, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn);
 				return;
 			}
 			if (y == 10)
 			{
-				GotoXY(x, y);
-				//cout << "Tai game";
-				LoadGameMenu(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn);
+				LoadGameMenu(_A, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn);
 				return;
 			}
 			if (y == 13)
 			{
-				GotoXY(x, y);
-				//cout << "Huong Dan"; // Chuyển đến trang hướng dẫn chơi game
-				HelpScreen();
+				HelpScreen(sound);
 				return;
 			}
 			if (y == 16)
 			{
-				GotoXY(x, y);
-				//cout << "Thiet lap"; // Đến trang điều chỉnh âm thanh
+				SettingMenu(sound);
+				return;
 			}
 			if (y == 19)
 			{
-				//exit(0); // Nhan 2 lan de Thoat Game
 				ExitGame();
 			}
 		}
@@ -825,7 +827,7 @@ void Help2()
 	cout << " " << L_TRIANGLE << " PRESS ESC TO COMEBACK " << R_TRIANGLE << " ";
 }
 
-void HelpScreen()
+void HelpScreen(bool sound)
 {
 	SetConsoleBlank();
 	DrawBox(98, 25, 11, 2, CYAN, 0);
@@ -839,7 +841,7 @@ void HelpScreen()
 	Help2();
 	while (true) {
 		char c = _getch();
-		PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
+		if (sound) PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
 		if (c == ESC)
 			return;
 	}
@@ -880,4 +882,21 @@ void CreateConsoleWindow(int pWidth, int pHeight)
 	SetConsoleTextAttribute(hConsole, 240);
 	GetWindowRect(consoleWindow, &r);
 	MoveWindow(consoleWindow, 0, 0, pWidth, pHeight, TRUE);
+}
+
+void SettingMenu(bool& sound) {
+	SetConsoleBlank();
+	GotoXY(50, 15);
+	int tmp = GetCurrentColor();
+	TextColor(RED);
+	cout << "Nhan ENTER di!";
+	TextColor(tmp);
+	while (true) {
+		char c = _getch();
+		if (c == ENTER)
+			SetSound(sound, sound ^ 1);
+		if (sound) PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
+		if (c == ESC)
+			return;
+	}
 }

@@ -12,13 +12,15 @@ int cntO;
 int saveTurn = 0;
 int cntWinO = 0, cntLoseO = 0;
 int cntDraw = 0;
+bool sound = 1;
 
 int main() {
 	HideCursor();
 	FixConsoleWindow();
 	SaveData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, "lanngu.txt");
+	LoadSound(sound);
 	while (true) {
-		MainMenu(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn);
+		MainMenu(_A, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn);
 	}
 	return 0;
 }
