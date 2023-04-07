@@ -104,6 +104,7 @@ void DrawBoard(int r, int c, int x, int y, int color) {
 //}
 
 void DrawBox(int w, int h, int x, int y, int color, int Time) {
+	int tmp = GetCurrentColor();
 	TextColor(color);
 	for (int i = 0; i < w / 2; i++) {
 		GotoXY(x + w / 2 - i, y);
@@ -135,6 +136,7 @@ void DrawBox(int w, int h, int x, int y, int color, int Time) {
 		cout << BOX_H_LINE;
 		Sleep(Time);
 	}
+	TextColor(tmp);
 }
 
 //update
@@ -206,6 +208,7 @@ void BackGround()
 
 void DrawBoxMini(int w, int h, int x, int y, int color)
 {
+	int tmp = GetCurrentColor();
 	TextColor(color);
 	GotoXY(x, y);
 	cout << TOP_LEFT;
@@ -226,28 +229,34 @@ void DrawBoxMini(int w, int h, int x, int y, int color)
 	for (int i = 1; i < w - 1; i++)
 		cout << H_LINE;
 	cout << BOTTOM_RIGHT;
+	TextColor(tmp);
 }
 
 void DrawButton()
 {
 	DrawBoxMini(14, 3, 89, 6, BLUE);
 	GotoXY(94, 7);
+	TextColor(BLUE);
 	cout << "PLAY";
 	Sleep(200);
 	DrawBoxMini(14, 3, 89, 9, BLUE);
 	GotoXY(94, 10);
+	TextColor(BLUE);
 	cout << "LOAD";
 	Sleep(200);
 	DrawBoxMini(14, 3, 89, 12, BLUE);
 	GotoXY(94, 13);
+	TextColor(BLUE);
 	cout << "HELP";
 	Sleep(200);
 	DrawBoxMini(14, 3, 89, 15, BLUE);
 	GotoXY(93, 16);
+	TextColor(BLUE);
 	cout << "SETTING";
 	Sleep(200);
 	DrawBoxMini(14, 3, 89, 18, BLUE);
 	GotoXY(94, 19);
+	TextColor(BLUE);
 	cout << "EXIT";
 	Sleep(200);
 }
@@ -1333,6 +1342,8 @@ void CntTurn(bool& _TURN, int& cntX, int& cntO, bool validEnter) {
 // Hiển thị lượt chơi
 void ShowTurn(int _X, int _Y, bool _TURN, bool validEnter)
 {
+	int tmp = GetCurrentColor();
+	TextColor(CYAN);
 	if (_TURN == true && validEnter == true)
 	{
 		GotoXY(80, 0);
@@ -1346,6 +1357,7 @@ void ShowTurn(int _X, int _Y, bool _TURN, bool validEnter)
 		TurnO();
 	}
 	GotoXY(_X, _Y);
+	TextColor(tmp);
 }
 
 void UnHoverCell(_POINT _A[B_SIZE][B_SIZE], int x, int y) {
@@ -1607,6 +1619,7 @@ void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& sound
 	int y = 7;
 	DrawBoxMini(14, 3, 89, y - 1, RED);
 	GotoXY(x, y); // Đưa cursor tới phím chức năng đầu tiên.
+	TextColor(RED);
 	cout << "PLAY";
 	while (true)
 	{
@@ -1621,6 +1634,7 @@ void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& sound
 				{
 					// Đưa lại nút cũ về màu xanh
 					DrawBoxMini(14, 3, 89, y - 1, BLUE);
+					TextColor(BLUE);
 					if (y == 7)
 					{
 						GotoXY(x, y);
@@ -1649,8 +1663,7 @@ void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& sound
 					y = y - 3;
 					//Biến nút đang trỏ vào thành màu đỏ 
 					DrawBoxMini(14, 3, 89, y - 1, RED);
-					GotoXY(x, y);
-
+					TextColor(RED);
 					if (y == 7)
 					{
 						GotoXY(x, y);
@@ -1684,6 +1697,7 @@ void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& sound
 				if ((y >= 7) && (y <= 16))
 				{
 					DrawBoxMini(14, 3, 89, y - 1, BLUE);
+					TextColor(BLUE);
 					if (y == 7)
 					{
 						GotoXY(x, y);
@@ -1711,7 +1725,7 @@ void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& sound
 					}
 					y = y + 3;
 					DrawBoxMini(14, 3, 89, y - 1, RED);
-					GotoXY(x, y);
+					TextColor(RED);
 
 					if (y == 7)
 					{

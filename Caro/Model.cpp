@@ -142,8 +142,8 @@ void SetupGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND
 		AskTurn(_TURN, NamePlayer_O, NamePlayer_X);
 		SetConsoleBlank();
 	}
+	ShowTurn(_X, _Y, !_TURN, true);
 	TextColor(BLUE);
-	DrawBoard(B_SIZE, B_SIZE, BOARD_X, BOARD_Y, GREEN);
 	GotoXY(70, 1);
 	cout << "CARO";
 	GotoXY(70, 2);
@@ -172,7 +172,7 @@ void SetupGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND
 	GotoXY(xBox + 25, yBox + 6);
 	cout << cntLoseO << "/" << cntWinO << "/" << cntDraw;
 	GotoXY(xBox, yBox + 8);
-	ShowTurn(_X, _Y, !_TURN, true);
+	DrawBoard(B_SIZE, B_SIZE, BOARD_X, BOARD_Y, GREEN);
 	for (int i = 0; i < B_SIZE; i++)
 		for (int j = 0; j < B_SIZE; j++)
 			if (_A[i][j].c == -1) {
