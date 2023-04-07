@@ -140,6 +140,7 @@ void SetupGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND
 		EnterNamePlayer(NamePlayer_O, NamePlayer_X);
 		SetConsoleBlank();
 		AskTurn(_TURN, NamePlayer_O, NamePlayer_X);
+		SetConsoleBlank();
 	}
 	TextColor(BLUE);
 	DrawBoard(B_SIZE, B_SIZE, BOARD_X, BOARD_Y, GREEN);
