@@ -269,18 +269,889 @@ void CaroAnimation()
 	PrintCARO(20, 9, RED);
 }
 
-int ProcessFinish(_POINT _A[B_SIZE][B_SIZE], int& _X, int& _Y, bool& _TURN, int pWhoWin)
+void ascii_art(string input, int x, int y, int t_color)
+{
+	//	set_console_size();
+	TextColor(t_color);
+	//first layer
+	for (int i = 0; i < input.size(); i++)
+	{
+		if (input[i] == '.') break;
+		if (i == 0) GotoXY(x, ++y);
+		if (input[i] == 'A' || input[i] == 'a')
+			cout << "  ___   ";
+		if (input[i] == 'B' || input[i] == 'b')
+			cout << " _____  ";
+		if (input[i] == 'C' || input[i] == 'c')
+			cout << " _____  ";
+		if (input[i] == 'D' || input[i] == 'd')
+			cout << " _____  ";
+		if (input[i] == 'E' || input[i] == 'e')
+			cout << " _____  ";
+		if (input[i] == 'F' || input[i] == 'f')
+			cout << " _____  ";
+		if (input[i] == 'G' || input[i] == 'g')
+			cout << " _____  ";
+		if (input[i] == 'H' || input[i] == 'h')
+			cout << " _   _  ";
+		if (input[i] == 'I' || input[i] == 'i')
+			cout << " _____  ";
+		if (input[i] == 'J' || input[i] == 'j')
+			cout << "   ___  ";
+		if (input[i] == 'K' || input[i] == 'k')
+			cout << " _   __ ";
+		if (input[i] == 'L' || input[i] == 'l')
+			cout << " _      ";
+		if (input[i] == 'M' || input[i] == 'm')
+			cout << " __  __  ";
+		if (input[i] == 'N' || input[i] == 'n')
+			cout << " _   _  ";
+		if (input[i] == 'O' || input[i] == 'o')
+			cout << " _____  ";
+		if (input[i] == 'P' || input[i] == 'p')
+			cout << " _____  ";
+		if (input[i] == 'Q' || input[i] == 'q')
+			cout << " _____  ";
+		if (input[i] == 'R' || input[i] == 'r')
+			cout << " _____  ";
+		if (input[i] == 'S' || input[i] == 's')
+			cout << " _____  ";
+		if (input[i] == 'T' || input[i] == 't')
+			cout << " _____  ";
+		if (input[i] == 'U' || input[i] == 'u')
+			cout << " _   _  ";
+		if (input[i] == 'V' || input[i] == 'v')
+			cout << " _   _  ";
+		if (input[i] == 'W' || input[i] == 'w')
+			cout << " _    _  ";
+		if (input[i] == 'X' || input[i] == 'x')
+			cout << "__   __ ";
+		if (input[i] == 'Y' || input[i] == 'y')
+			cout << "__   __ ";
+		if (input[i] == 'Z' || input[i] == 'z')
+			cout << " ______ ";
+		if (input[i] == ' ')
+			cout << "  ";
+		if (input[i] == '`')
+			cout << " _  ";
+		if (input[i] == '~')
+			cout << "      ";
+		if (input[i] == '1')
+			cout << " __   ";
+		if (input[i] == '2')
+			cout << " _____  ";
+		if (input[i] == '3')
+			cout << " _____  ";
+		if (input[i] == '4')
+			cout << "   ___  ";
+		if (input[i] == '5')
+			cout << " _____  ";
+		if (input[i] == '6')
+			cout << "  ____  ";
+		if (input[i] == '7')
+			cout << " ______ ";
+		if (input[i] == '8')
+			cout << " _____  ";
+		if (input[i] == '9')
+			cout << " _____  ";
+		if (input[i] == '0')
+			cout << " _____  ";
+		if (input[i] == '!')
+			cout << " _  ";
+		if (input[i] == '@')
+			cout << "   ____   ";
+		if (input[i] == '#')
+			cout << "   _  _    ";
+		if (input[i] == '$')
+			cout << "  _   ";
+		if (input[i] == '%')
+			cout << " _   __ ";
+		if (input[i] == '^')
+			cout << " /\\  ";
+		if (input[i] == '&')
+			cout << "         ";
+		if (input[i] == '*')
+			cout << "    _     ";
+		if (input[i] == '(')
+			cout << "  __ ";
+		if (input[i] == ')')
+			cout << "__   ";
+		if (input[i] == '-')
+			cout << "         ";
+		if (input[i] == '_')
+			cout << "         ";
+		if (input[i] == '=')
+			cout << "         ";
+		if (input[i] == '+')
+			cout << "        ";
+		if (input[i] == '[')
+			cout << " ___  ";
+		if (input[i] == '{')
+			cout << "   __ ";
+		if (input[i] == ']')
+			cout << " ___  ";
+		if (input[i] == '}')
+			cout << "__    ";
+		if (input[i] == '|')
+			cout << " _  ";
+		if (input[i] == '\\')
+			cout << "__      ";
+		if (input[i] == ';')
+			cout << " _  ";
+		if (input[i] == ':')
+			cout << "    ";
+		if (input[i] == '\'')
+			cout << " _  ";
+		if (input[i] == '"')
+			cout << " _ _  ";
+		if (input[i] == '<')
+			cout << "   __ ";
+		if (input[i] == ',')
+			cout << "    ";
+		if (input[i] == '>')
+			cout << "__    ";
+		if (input[i] == '/')
+			cout << "     __ ";
+		if (input[i] == '?')
+			cout << " ___   ";
+	}
+	cout << endl;
+	//second layer
+	for (int i = 0; i < input.size(); i++)
+	{
+		if (input[i] == '.') break;
+		if (i == 0) GotoXY(x, ++y);
+		if (input[i] == 'A' || input[i] == 'a')
+			cout << " / _ \\  ";
+		if (input[i] == 'B' || input[i] == 'b')
+			cout << "| ___ \\ ";
+		if (input[i] == 'C' || input[i] == 'c')
+			cout << "/  __ \\ ";
+		if (input[i] == 'D' || input[i] == 'd')
+			cout << "|  _  \\ ";
+		if (input[i] == 'E' || input[i] == 'e')
+			cout << "|  ___| ";
+		if (input[i] == 'F' || input[i] == 'f')
+			cout << "|  ___| ";
+		if (input[i] == 'G' || input[i] == 'g')
+			cout << "|  __ \\ ";
+		if (input[i] == 'H' || input[i] == 'h')
+			cout << "| | | | ";
+		if (input[i] == 'I' || input[i] == 'i')
+			cout << "|_   _| ";
+		if (input[i] == 'J' || input[i] == 'j')
+			cout << "  |_  | ";
+		if (input[i] == 'K' || input[i] == 'k')
+			cout << "| | / / ";
+		if (input[i] == 'L' || input[i] == 'l')
+			cout << "| |     ";
+		if (input[i] == 'M' || input[i] == 'm')
+			cout << "|  \\/  | ";
+		if (input[i] == 'N' || input[i] == 'n')
+			cout << "| \\ | | ";
+		if (input[i] == 'O' || input[i] == 'o')
+			cout << "|  _  | ";
+		if (input[i] == 'P' || input[i] == 'p')
+			cout << "| ___ \\ ";
+		if (input[i] == 'Q' || input[i] == 'q')
+			cout << "|  _  | ";
+		if (input[i] == 'R' || input[i] == 'r')
+			cout << "| ___ \\ ";
+		if (input[i] == 'S' || input[i] == 's')
+			cout << "/  ___| ";
+		if (input[i] == 'T' || input[i] == 't')
+			cout << "|_   _| ";
+		if (input[i] == 'U' || input[i] == 'u')
+			cout << "| | | | ";
+		if (input[i] == 'V' || input[i] == 'v')
+			cout << "| | | | ";
+		if (input[i] == 'W' || input[i] == 'w')
+			cout << "| |  | | ";
+		if (input[i] == 'X' || input[i] == 'x')
+			cout << "\\ \\ / / ";
+		if (input[i] == 'Y' || input[i] == 'y')
+			cout << "\\ \\ / / ";
+		if (input[i] == 'Z' || input[i] == 'z')
+			cout << "|___  / ";
+		if (input[i] == ' ')
+			cout << "  ";
+		if (input[i] == '`')
+			cout << "( ) ";
+		if (input[i] == '~')
+			cout << "      ";
+		if (input[i] == '1')
+			cout << "/  |  ";
+		if (input[i] == '2')
+			cout << "/ __  \\ ";
+		if (input[i] == '3')
+			cout << "|____ | ";
+		if (input[i] == '4')
+			cout << "  /   | ";
+		if (input[i] == '5')
+			cout << "|  ___| ";
+		if (input[i] == '6')
+			cout << " / ___| ";
+		if (input[i] == '7')
+			cout << "|___  / ";
+		if (input[i] == '8')
+			cout << "|  _  | ";
+		if (input[i] == '9')
+			cout << "|  _  | ";
+		if (input[i] == '0')
+			cout << "|  _  | ";
+		if (input[i] == '!')
+			cout << "| | ";
+		if (input[i] == '@')
+			cout << "  / __ \\  ";
+		if (input[i] == '#')
+			cout << " _| || |_  ";
+		if (input[i] == '$')
+			cout << " | |  ";
+		if (input[i] == '%')
+			cout << "(_) / / ";
+		if (input[i] == '^')
+			cout << "|/\\| ";
+		if (input[i] == '&')
+			cout << "  ___    ";
+		if (input[i] == '*')
+			cout << " /\\| |/\\  ";
+		if (input[i] == '(')
+			cout << " / / ";
+		if (input[i] == ')')
+			cout << "\\ \\  ";
+		if (input[i] == '-')
+			cout << "         ";
+		if (input[i] == '_')
+			cout << "         ";
+		if (input[i] == '=')
+			cout << " ______  ";
+		if (input[i] == '+')
+			cout << "   _    ";
+		if (input[i] == '[')
+			cout << "|  _| ";
+		if (input[i] == '{')
+			cout << "  / / ";
+		if (input[i] == ']')
+			cout << "|_  | ";
+		if (input[i] == '}')
+			cout << "\\ \\   ";
+		if (input[i] == '|')
+			cout << "| | ";
+		if (input[i] == '\\')
+			cout << "\\ \\     ";
+		if (input[i] == ';')
+			cout << "(_) ";
+		if (input[i] == ':')
+			cout << " _  ";
+		if (input[i] == '\'')
+			cout << "( ) ";
+		if (input[i] == '"')
+			cout << "( | ) ";
+		if (input[i] == '<')
+			cout << "  / / ";
+		if (input[i] == ',')
+			cout << "    ";
+		if (input[i] == '>')
+			cout << "\\ \\   ";
+		if (input[i] == '/')
+			cout << "    / / ";
+		if (input[i] == '?')
+			cout << "|__ \\  ";
+	}
+	cout << endl;
+	//third layer
+	for (int i = 0; i < input.size(); i++)
+	{
+		if (input[i] == '.') break;
+		if (i == 0) GotoXY(x, ++y);
+		if (input[i] == 'A' || input[i] == 'a')
+			cout << "/ /_\\ \\ ";
+		if (input[i] == 'B' || input[i] == 'b')
+			cout << "| |_/ / ";
+		if (input[i] == 'C' || input[i] == 'c')
+			cout << "| /  \\/ ";
+		if (input[i] == 'D' || input[i] == 'd')
+			cout << "| | | | ";
+		if (input[i] == 'E' || input[i] == 'e')
+			cout << "| |__   ";
+		if (input[i] == 'F' || input[i] == 'f')
+			cout << "| |_    ";
+		if (input[i] == 'G' || input[i] == 'g')
+			cout << "| |  \\/ ";
+		if (input[i] == 'H' || input[i] == 'h')
+			cout << "| |_| | ";
+		if (input[i] == 'I' || input[i] == 'i')
+			cout << "  | |   ";
+		if (input[i] == 'J' || input[i] == 'j')
+			cout << "    | | ";
+		if (input[i] == 'K' || input[i] == 'k')
+			cout << "| |/ /  ";
+		if (input[i] == 'L' || input[i] == 'l')
+			cout << "| |     ";
+		if (input[i] == 'M' || input[i] == 'm')
+			cout << "| .  . | ";
+		if (input[i] == 'N' || input[i] == 'n')
+			cout << "|  \\| | ";
+		if (input[i] == 'O' || input[i] == 'o')
+			cout << "| | | | ";
+		if (input[i] == 'P' || input[i] == 'p')
+			cout << "| |_/ / ";
+		if (input[i] == 'Q' || input[i] == 'q')
+			cout << "| | | | ";
+		if (input[i] == 'R' || input[i] == 'r')
+			cout << "| |_/ / ";
+		if (input[i] == 'S' || input[i] == 's')
+			cout << "\\ `--.  ";
+		if (input[i] == 'T' || input[i] == 't')
+			cout << "  | |   ";
+		if (input[i] == 'U' || input[i] == 'u')
+			cout << "| | | | ";
+		if (input[i] == 'V' || input[i] == 'v')
+			cout << "| | | | ";
+		if (input[i] == 'W' || input[i] == 'w')
+			cout << "| |  | | ";
+		if (input[i] == 'X' || input[i] == 'x')
+			cout << " \\ V /  ";
+		if (input[i] == 'Y' || input[i] == 'y')
+			cout << " \\ V /  ";
+		if (input[i] == 'Z' || input[i] == 'z')
+			cout << "   / /  ";
+		if (input[i] == ' ')
+			cout << "  ";
+		if (input[i] == '`')
+			cout << " \\| ";
+		if (input[i] == '~')
+			cout << " /\\/| ";
+		if (input[i] == '1')
+			cout << "`| |  ";
+		if (input[i] == '2')
+			cout << "`' / /' ";
+		if (input[i] == '3')
+			cout << "    / / ";
+		if (input[i] == '4')
+			cout << " / /| | ";
+		if (input[i] == '5')
+			cout << "|___ \\  ";
+		if (input[i] == '6')
+			cout << "/ /___  ";
+		if (input[i] == '7')
+			cout << "   / /  ";
+		if (input[i] == '8')
+			cout << " \\ V /  ";
+		if (input[i] == '9')
+			cout << "| |_| | ";
+		if (input[i] == '0')
+			cout << "| |/' | ";
+		if (input[i] == '!')
+			cout << "| | ";
+		if (input[i] == '@')
+			cout << " / / _` | ";
+		if (input[i] == '#')
+			cout << "|_  __  _| ";
+		if (input[i] == '$')
+			cout << "/ __) ";
+		if (input[i] == '%')
+			cout << "   / /  ";
+		if (input[i] == '^')
+			cout << "     ";
+		if (input[i] == '&')
+			cout << " ( _ )   ";
+		if (input[i] == '*')
+			cout << " \\ ` ' /  ";
+		if (input[i] == '(')
+			cout << "| |  ";
+		if (input[i] == ')')
+			cout << " | | ";
+		if (input[i] == '-')
+			cout << " ______  ";
+		if (input[i] == '_')
+			cout << "         ";
+		if (input[i] == '=')
+			cout << "|______| ";
+		if (input[i] == '+')
+			cout << " _| |_  ";
+		if (input[i] == '[')
+			cout << "| |   ";
+		if (input[i] == '{')
+			cout << " | |  ";
+		if (input[i] == ']')
+			cout << "  | | ";
+		if (input[i] == '}')
+			cout << " | |  ";
+		if (input[i] == '|')
+			cout << "| | ";
+		if (input[i] == '\\')
+			cout << " \\ \\    ";
+		if (input[i] == ';')
+			cout << "    ";
+		if (input[i] == ':')
+			cout << "(_) ";
+		if (input[i] == '\'')
+			cout << "|/  ";
+		if (input[i] == '"')
+			cout << " V V  ";
+		if (input[i] == '<')
+			cout << " / /  ";
+		if (input[i] == ',')
+			cout << "    ";
+		if (input[i] == '>')
+			cout << " \\ \\  ";
+		if (input[i] == '/')
+			cout << "   / /  ";
+		if (input[i] == '?')
+			cout << "   ) | ";
+	}
+	cout << endl;
+	//fourth layer
+	for (int i = 0; i < input.size(); i++)
+	{
+		if (input[i] == '.') break;
+		if (i == 0) GotoXY(x, ++y);
+		if (input[i] == 'A' || input[i] == 'a')
+			cout << "|  _  | ";
+		if (input[i] == 'B' || input[i] == 'b')
+			cout << "| ___ \\ ";
+		if (input[i] == 'C' || input[i] == 'c')
+			cout << "| |     ";
+		if (input[i] == 'D' || input[i] == 'd')
+			cout << "| | | | ";
+		if (input[i] == 'E' || input[i] == 'e')
+			cout << "|  __|  ";
+		if (input[i] == 'F' || input[i] == 'f')
+			cout << "|  _|   ";
+		if (input[i] == 'G' || input[i] == 'g')
+			cout << "| | __  ";
+		if (input[i] == 'H' || input[i] == 'h')
+			cout << "|  _  | ";
+		if (input[i] == 'I' || input[i] == 'i')
+			cout << "  | |   ";
+		if (input[i] == 'J' || input[i] == 'j')
+			cout << "    | | ";
+		if (input[i] == 'K' || input[i] == 'k')
+			cout << "|    \\  ";
+		if (input[i] == 'L' || input[i] == 'l')
+			cout << "| |     ";
+		if (input[i] == 'M' || input[i] == 'm')
+			cout << "| |\\/| | ";
+		if (input[i] == 'N' || input[i] == 'n')
+			cout << "| . ` | ";
+		if (input[i] == 'O' || input[i] == 'o')
+			cout << "| | | | ";
+		if (input[i] == 'P' || input[i] == 'p')
+			cout << "|  __/  ";
+		if (input[i] == 'Q' || input[i] == 'q')
+			cout << "| | | | ";
+		if (input[i] == 'R' || input[i] == 'r')
+			cout << "|    /  ";
+		if (input[i] == 'S' || input[i] == 's')
+			cout << " `--. \\ ";
+		if (input[i] == 'T' || input[i] == 't')
+			cout << "  | |   ";
+		if (input[i] == 'U' || input[i] == 'u')
+			cout << "| | | | ";
+		if (input[i] == 'V' || input[i] == 'v')
+			cout << "| | | | ";
+		if (input[i] == 'W' || input[i] == 'w')
+			cout << "| |/\\| | ";
+		if (input[i] == 'X' || input[i] == 'x')
+			cout << " / ^ \\  ";
+		if (input[i] == 'Y' || input[i] == 'y')
+			cout << "  \\ /   ";
+		if (input[i] == 'Z' || input[i] == 'z')
+			cout << "  / /   ";
+		if (input[i] == ' ')
+			cout << "  ";
+		if (input[i] == '`')
+			cout << "    ";
+		if (input[i] == '~')
+			cout << "|/\\/  ";
+		if (input[i] == '1')
+			cout << " | |  ";
+		if (input[i] == '2')
+			cout << "  / /   ";
+		if (input[i] == '3')
+			cout << "    \\ \\ ";
+		if (input[i] == '4')
+			cout << "/ /_| | ";
+		if (input[i] == '5')
+			cout << "    \\ \\ ";
+		if (input[i] == '6')
+			cout << "| ___ \\ ";
+		if (input[i] == '7')
+			cout << "  / /   ";
+		if (input[i] == '8')
+			cout << " / _ \\  ";
+		if (input[i] == '9')
+			cout << "\\____ | ";
+		if (input[i] == '0')
+			cout << "|  /| | ";
+		if (input[i] == '!')
+			cout << "| | ";
+		if (input[i] == '@')
+			cout << "| | (_| | ";
+		if (input[i] == '#')
+			cout << " _| || |_  ";
+		if (input[i] == '$')
+			cout << "\\__ \\ ";
+		if (input[i] == '%')
+			cout << "  / /   ";
+		if (input[i] == '^')
+			cout << "     ";
+		if (input[i] == '&')
+			cout << " / _ \\/\\ ";
+		if (input[i] == '*')
+			cout << "|_     _| ";
+		if (input[i] == '(')
+			cout << "| |  ";
+		if (input[i] == ')')
+			cout << " | | ";
+		if (input[i] == '-')
+			cout << "|______| ";
+		if (input[i] == '_')
+			cout << "         ";
+		if (input[i] == '=')
+			cout << " ______  ";
+		if (input[i] == '+')
+			cout << "|_   _| ";
+		if (input[i] == '[')
+			cout << "| |   ";
+		if (input[i] == '{')
+			cout << "< <   ";
+		if (input[i] == ']')
+			cout << "  | | ";
+		if (input[i] == '}')
+			cout << "  > > ";
+		if (input[i] == '|')
+			cout << "| | ";
+		if (input[i] == '\\')
+			cout << "  \\ \\   ";
+		if (input[i] == ';')
+			cout << " _  ";
+		if (input[i] == ':')
+			cout << "    ";
+		if (input[i] == '\'')
+			cout << "    ";
+		if (input[i] == '"')
+			cout << "      ";
+		if (input[i] == '<')
+			cout << "< <   ";
+		if (input[i] == ',')
+			cout << " _  ";
+		if (input[i] == '>')
+			cout << "  > > ";
+		if (input[i] == '/')
+			cout << "  / /   ";
+		if (input[i] == '?')
+			cout << "  / /  ";
+	}
+	cout << endl;
+	//fifth layer
+	for (int i = 0; i < input.size(); i++)
+	{
+		if (input[i] == '.') break;
+		if (i == 0) GotoXY(x, ++y);
+		if (input[i] == 'A' || input[i] == 'a')
+			cout << "| | | | ";
+		if (input[i] == 'B' || input[i] == 'b')
+			cout << "| |_/ / ";
+		if (input[i] == 'C' || input[i] == 'c')
+			cout << "| \\__/\\ ";
+		if (input[i] == 'D' || input[i] == 'd')
+			cout << "| |/ /  ";
+		if (input[i] == 'E' || input[i] == 'e')
+			cout << "| |___  ";
+		if (input[i] == 'F' || input[i] == 'f')
+			cout << "| |     ";
+		if (input[i] == 'G' || input[i] == 'g')
+			cout << "| |_\\ \\ ";
+		if (input[i] == 'H' || input[i] == 'h')
+			cout << "| | | | ";
+		if (input[i] == 'I' || input[i] == 'i')
+			cout << " _| |_  ";
+		if (input[i] == 'J' || input[i] == 'j')
+			cout << "/\\__/ / ";
+		if (input[i] == 'K' || input[i] == 'k')
+			cout << "| |\\  \\ ";
+		if (input[i] == 'L' || input[i] == 'l')
+			cout << "| |____ ";
+		if (input[i] == 'M' || input[i] == 'm')
+			cout << "| |  | | ";
+		if (input[i] == 'N' || input[i] == 'n')
+			cout << "| |\\  | ";
+		if (input[i] == 'O' || input[i] == 'o')
+			cout << "\\ \\_/ / ";
+		if (input[i] == 'P' || input[i] == 'p')
+			cout << "| |     ";
+		if (input[i] == 'Q' || input[i] == 'q')
+			cout << "\\ \\/' / ";
+		if (input[i] == 'R' || input[i] == 'r')
+			cout << "| |\\ \\  ";
+		if (input[i] == 'S' || input[i] == 's')
+			cout << "/\\__/ / ";
+		if (input[i] == 'T' || input[i] == 't')
+			cout << "  | |   ";
+		if (input[i] == 'U' || input[i] == 'u')
+			cout << "| |_| | ";
+		if (input[i] == 'V' || input[i] == 'v')
+			cout << "\\ \\_/ / ";
+		if (input[i] == 'W' || input[i] == 'w')
+			cout << "\\  /\\  / ";
+		if (input[i] == 'X' || input[i] == 'x')
+			cout << "/ / \\ \\ ";
+		if (input[i] == 'Y' || input[i] == 'y')
+			cout << "  | |   ";
+		if (input[i] == 'Z' || input[i] == 'z')
+			cout << "./ /___ ";
+		if (input[i] == ' ')
+			cout << "  ";
+		if (input[i] == '`')
+			cout << "    ";
+		if (input[i] == '~')
+			cout << "      ";
+		if (input[i] == '1')
+			cout << "_| |_ ";
+		if (input[i] == '2')
+			cout << "./ /___ ";
+		if (input[i] == '3')
+			cout << ".___/ / ";
+		if (input[i] == '4')
+			cout << "\\___  | ";
+		if (input[i] == '5')
+			cout << "/\\__/ / ";
+		if (input[i] == '6')
+			cout << "| \\_/ | ";
+		if (input[i] == '7')
+			cout << "./ /    ";
+		if (input[i] == '8')
+			cout << "| |_| | ";
+		if (input[i] == '9')
+			cout << ".___/ / ";
+		if (input[i] == '0')
+			cout << "\\ |_/ / ";
+		if (input[i] == '!')
+			cout << "|_| ";
+		if (input[i] == '@')
+			cout << " \\ \\__,_| ";
+		if (input[i] == '#')
+			cout << "|_  __  _| ";
+		if (input[i] == '$')
+			cout << "(   / ";
+		if (input[i] == '%')
+			cout << " / / _  ";
+		if (input[i] == '^')
+			cout << "     ";
+		if (input[i] == '&')
+			cout << "| (_>  < ";
+		if (input[i] == '*')
+			cout << " / , . \\  ";
+		if (input[i] == '(')
+			cout << "| |  ";
+		if (input[i] == ')')
+			cout << " | | ";
+		if (input[i] == '-')
+			cout << "         ";
+		if (input[i] == '_')
+			cout << " ______  ";
+		if (input[i] == '=')
+			cout << "|______| ";
+		if (input[i] == '+')
+			cout << "  |_|   ";
+		if (input[i] == '[')
+			cout << "| |_  ";
+		if (input[i] == '{')
+			cout << " | |  ";
+		if (input[i] == ']')
+			cout << " _| | ";
+		if (input[i] == '}')
+			cout << " | |  ";
+		if (input[i] == '|')
+			cout << "| | ";
+		if (input[i] == '\\')
+			cout << "   \\ \\  ";
+		if (input[i] == ';')
+			cout << "( ) ";
+		if (input[i] == ':')
+			cout << " _  ";
+		if (input[i] == '\'')
+			cout << "    ";
+		if (input[i] == '"')
+			cout << "      ";
+		if (input[i] == '<')
+			cout << " \\ \\  ";
+		if (input[i] == ',')
+			cout << "( ) ";
+		if (input[i] == '>')
+			cout << " / /  ";
+		if (input[i] == '/')
+			cout << " / /    ";
+		if (input[i] == '?')
+			cout << " |_|   ";
+	}
+	cout << endl;
+	//sixth layer
+	for (int i = 0; i < input.size(); i++)
+	{
+		if (input[i] == '.') break;
+		if (i == 0) GotoXY(x, ++y);
+		if (input[i] == 'A' || input[i] == 'a')
+			cout << "\\_| |_/ ";
+		if (input[i] == 'B' || input[i] == 'b')
+			cout << "\\____/  ";
+		if (input[i] == 'C' || input[i] == 'c')
+			cout << " \\____/ ";
+		if (input[i] == 'D' || input[i] == 'd')
+			cout << "|___/   ";
+		if (input[i] == 'E' || input[i] == 'e')
+			cout << "\\____/  ";
+		if (input[i] == 'F' || input[i] == 'f')
+			cout << "\\_|     ";
+		if (input[i] == 'G' || input[i] == 'g')
+			cout << " \\____/ ";
+		if (input[i] == 'H' || input[i] == 'h')
+			cout << "\\_| |_/ ";
+		if (input[i] == 'I' || input[i] == 'i')
+			cout << " \\___/  ";
+		if (input[i] == 'J' || input[i] == 'j')
+			cout << "\\____/  ";
+		if (input[i] == 'K' || input[i] == 'k')
+			cout << "\\_| \\_/ ";
+		if (input[i] == 'L' || input[i] == 'l')
+			cout << "\\_____/ ";
+		if (input[i] == 'M' || input[i] == 'm')
+			cout << "\\_|  |_/ ";
+		if (input[i] == 'N' || input[i] == 'n')
+			cout << "\\_| \\_/ ";
+		if (input[i] == 'O' || input[i] == 'o')
+			cout << " \\___/  ";
+		if (input[i] == 'P' || input[i] == 'p')
+			cout << "\\_|     ";
+		if (input[i] == 'Q' || input[i] == 'q')
+			cout << " \\_/\\_\\ ";
+		if (input[i] == 'R' || input[i] == 'r')
+			cout << "\\_| \\_| ";
+		if (input[i] == 'S' || input[i] == 's')
+			cout << "\\____/  ";
+		if (input[i] == 'T' || input[i] == 't')
+			cout << "  \\_/   ";
+		if (input[i] == 'U' || input[i] == 'u')
+			cout << " \\___/  ";
+		if (input[i] == 'V' || input[i] == 'v')
+			cout << " \\___/  ";
+		if (input[i] == 'W' || input[i] == 'w')
+			cout << " \\/  \\/  ";
+		if (input[i] == 'X' || input[i] == 'x')
+			cout << "\\/   \\/ ";
+		if (input[i] == 'Y' || input[i] == 'y')
+			cout << "  \\_/   ";
+		if (input[i] == 'Z' || input[i] == 'z')
+			cout << "\\_____/ ";
+		if (input[i] == ' ')
+			cout << "  ";
+		if (input[i] == '`')
+			cout << "    ";
+		if (input[i] == '~')
+			cout << "      ";
+		if (input[i] == '1')
+			cout << "\\___/ ";
+		if (input[i] == '2')
+			cout << "\\_____/ ";
+		if (input[i] == '3')
+			cout << "\\____/  ";
+		if (input[i] == '4')
+			cout << "    |_/ ";
+		if (input[i] == '5')
+			cout << "\\____/  ";
+		if (input[i] == '6')
+			cout << "\\_____/ ";
+		if (input[i] == '7')
+			cout << "\\_/     ";
+		if (input[i] == '8')
+			cout << "\\_____/ ";
+		if (input[i] == '9')
+			cout << "\\____/  ";
+		if (input[i] == '0')
+			cout << " \\___/  ";
+		if (input[i] == '!')
+			cout << "(_) ";
+		if (input[i] == '@')
+			cout << "  \\____/  ";
+		if (input[i] == '#')
+			cout << "  |_||_|   ";
+		if (input[i] == '$')
+			cout << " |_|  ";
+		if (input[i] == '%')
+			cout << "/_/ (_) ";
+		if (input[i] == '^')
+			cout << "     ";
+		if (input[i] == '&')
+			cout << " \\___/\\/ ";
+		if (input[i] == '*')
+			cout << " \\/|_|\\/  ";
+		if (input[i] == '(')
+			cout << " \\_\\ ";
+		if (input[i] == ')')
+			cout << "/_/  ";
+		if (input[i] == '-')
+			cout << "         ";
+		if (input[i] == '_')
+			cout << "|______| ";
+		if (input[i] == '=')
+			cout << "         ";
+		if (input[i] == '+')
+			cout << "        ";
+		if (input[i] == '[')
+			cout << "|___| ";
+		if (input[i] == '{')
+			cout << "  \\_\\ ";
+		if (input[i] == ']')
+			cout << "|___| ";
+		if (input[i] == '}')
+			cout << "/_/   ";
+		if (input[i] == '|')
+			cout << "|_| ";
+		if (input[i] == '\\')
+			cout << "    \\_\\ ";
+		if (input[i] == ';')
+			cout << "|/  ";
+		if (input[i] == ':')
+			cout << "(_) ";
+		if (input[i] == '\'')
+			cout << "    ";
+		if (input[i] == '"')
+			cout << "      ";
+		if (input[i] == '<')
+			cout << "  \\_\\ ";
+		if (input[i] == ',')
+			cout << "|/  ";
+		if (input[i] == '>')
+			cout << "/_/   ";
+		if (input[i] == '/')
+			cout << "/_/     ";
+		if (input[i] == '?')
+			cout << " (_)   ";
+	}
+	cout << endl;
+}
+
+int ProcessFinish(_POINT _A[B_SIZE][B_SIZE], int& _X, int& _Y, bool& _TURN, int pWhoWin, string& NamePlayer_O, string& NamePlayer_X)
 {
 	GotoXY(0, _A[B_SIZE - 1][B_SIZE - 1].y + 2);
 	switch (pWhoWin) {
 	case 1:
-		cout << "Nguoi choi O da thang !!!";
+		SetConsoleBlank();
+		ascii_art(NamePlayer_O, 1, 1, RED);
+		ascii_art("thang !!!", 1, 8, GREEN);
+		/*ascii_art("DrawWinScreen", 1, 5, BLUE);*/
 		break;
 	case -1:
-		cout << "Nguoi choi X da thang !!!";
+		SetConsoleBlank();
+		ascii_art(NamePlayer_X, 1, 1, RED);
+		ascii_art("thang !!!", 1, 8, GREEN);
+		/*ascii_art("DrawWinScreen", 1, 5,BLUE);*/
 		break;
 	case 0:
-		cout << "Hai nguoi hoa nhau XOXO";
+		SetConsoleBlank();
+		ascii_art(" DRAW !!", 1, 5, RED);
 		break;
 	case 2:
 		_TURN = !_TURN;
@@ -297,33 +1168,165 @@ char AskContinue(_POINT _A[B_SIZE][B_SIZE])
 	return toupper(_getch());
 }
 
-void AskTurn(bool& _TURN) { // Hỏi lượt đánh trước
-	GotoXY(1, 1);
-	TextColor(YELLOW);
-	cout << "Moi ban chon luot danh truoc: (O/X) ";
-	char s = toupper(_getch());
-	if (s == 88) {
-		_TURN = false;
+void AskTurn(bool& _TURN, string& NamePlayer_O, string& NamePlayer_X) { // Hỏi lượt đánh trước
+	DrawBoxMini(90, 22, 15, 6, GREEN);//vẽ khung to
+	// Vẽ hai ô hiển thị O vs X
+	int wide = 20;
+	int high = 10;
+	int x = 20;
+	int y = 10;
+	DrawAsciiFile(0, 1, "DrawTurn", BLUE);
+	DrawAsciiFile(x + wide / 2, y + high / 2 - 2, "DrawTurnO", GRAY);
+	DrawAsciiFile(x + wide / 2, y + high / 2 - 2, "DrawTurnX", GRAY);
+	// Vẽ ô hiển thị tên
+	int WideBoxName = 30;
+	int HighBoxName = 3;
+	int X_BoxName = 44;
+	int Y_BoxName = 10;
+	DrawBoxMini(WideBoxName, HighBoxName, X_BoxName, Y_BoxName, MAGENTA);
+	GotoXY(X_BoxName + WideBoxName / 2 - NamePlayer_O.size() / 2, Y_BoxName + 1);
+	TextColor(GREEN);
+	cout << NamePlayer_O;
+	GotoXY(X_BoxName + 1, Y_BoxName + 1);
+	TextColor(BLUE);
+	cout << (unsigned char)17;
+	GotoXY(X_BoxName + WideBoxName - 2, Y_BoxName + 1);
+	TextColor(BLUE);
+	cout << (unsigned char)16;
+	TextColor(RED);
+	bool check = true;
+	while (true) {
+		char press = toupper(_getch());
+		PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
+		if (press == 'D' || press == 'A') {
+			if (press == 'D')
+			{
+				GotoXY(X_BoxName + WideBoxName - 2, Y_BoxName + 1);
+				TextColor(YELLOW);
+				cout << (unsigned char)16;
+				Sleep(200);
+				GotoXY(X_BoxName + WideBoxName - 2, Y_BoxName + 1);
+				TextColor(BLUE);
+				cout << (unsigned char)16;
+			}
+			else if (press == 'A') {
+				GotoXY(X_BoxName + 1, Y_BoxName + 1);
+				TextColor(YELLOW);
+				cout << (unsigned char)17;
+				Sleep(200);
+				GotoXY(X_BoxName + 1, Y_BoxName + 1);
+				TextColor(BLUE);
+				cout << (unsigned char)17;
+			}
+			if (check == true)
+			{
+				GotoXY(X_BoxName + WideBoxName / 2 - NamePlayer_O.size() / 2, Y_BoxName + 1);
+				for (int i = 0; i < NamePlayer_O.size(); i++)
+					cout << ' ';
+				GotoXY(X_BoxName + WideBoxName / 2 - NamePlayer_X.size() / 2, Y_BoxName + 1);
+				TextColor(GREEN);
+				cout << NamePlayer_X;
+				check = false;
+			}
+			else if (check == false) {
+				GotoXY(X_BoxName + WideBoxName / 2 - NamePlayer_X.size() / 2, Y_BoxName + 1);
+				for (int i = 0; i < NamePlayer_X.size(); i++)
+					cout << ' ';
+				GotoXY(X_BoxName + WideBoxName / 2 - NamePlayer_O.size() / 2, Y_BoxName + 1);
+				TextColor(GREEN);
+				cout << NamePlayer_O;
+				check = true;
+			}
+		}
+		else if (press == ENTER) {
+			break;
+		}
 	}
-	else {
-		_TURN = true;
+	GotoXY(x, y);
+	DrawAsciiFile(x + wide / 2, y + high / 2 - 2, "DrawTurnO", BLUE);
+	while (true) {
+		unsigned char c = toupper(_getch());
+		PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
+		if (c == 'A' || c == 'D') {
+			if (c == 'A') {
+				if (x == 50) {
+					DrawAsciiFile(x + wide / 2, y + high / 2 - 2, "DrawTurnX", GRAY);
+					x -= 30;
+					DrawAsciiFile(x + wide / 2, y + high / 2 - 2, "DrawTurnO", BLUE);
+				}
+			}
+			else if (c == 'D') {
+				if (x == 20) {
+					DrawAsciiFile(x + wide / 2, y + high / 2 - 2, "DrawTurnO", GRAY);
+					x += 30;
+					DrawAsciiFile(x + wide / 2, y + high / 2 - 2, "DrawTurnX", RED);
+				}
+			}
+		}
+		else if (c == ENTER) {
+			if (x == 20) {
+				_TURN = true; // true là lượt của O
+				if (check == false)
+					swap(NamePlayer_O, NamePlayer_X);
+				return;
+			}
+			else if (x == 50) {
+				_TURN = false; // false là lượt của X
+				if (check == true)
+					swap(NamePlayer_O, NamePlayer_X);
+				return;
+			}
+		}
+	}
+}
+
+void EnterNamePlayer(string& NamePlayer_O, string& NamePlayer_X) {
+	DrawAsciiFile(0, 1, "DrawEnterName", BLUE);
+	TextColor(BLUE);
+	GotoXY(11, 11);
+	cout << "Enter Name Player 1 (20 character max): "; 
+	while (true) {
+		getline(cin, NamePlayer_O);
+		if (NamePlayer_O.size() <= 20)
+			break;
+		GotoXY(51, 11);
+		for (int i = 0; i < NamePlayer_O.size(); i++)
+			cout << ' ';
+		GotoXY(51, 11);
+	}
+
+	GotoXY(11, 12);
+	cout << "Enter Name Player 2 (20 character max): "; 
+	while (true) {
+		getline(cin, NamePlayer_X);
+		if (NamePlayer_X.size() <= 20)
+			break;
+		GotoXY(51, 12);
+		for (int i = 0; i < NamePlayer_X.size(); i++)
+			cout << ' ';
+		GotoXY(51, 12);
 	}
 }
 
 // Đếm số lượt chơi và in ra màn hình console
 void CntTurn(bool& _TURN, int& cntX, int& cntO, bool validEnter) {
+	TextColor(BLUE);
+	GotoXY(83, 11);
+	cout << cntO;
+	GotoXY(83, 14);
+	cout << cntX;
 	if (_TURN == false && validEnter == true)
 	{
 		++cntX;
-		GotoXY(80, 1);
-		cout << "step X:" << cntX;
+		GotoXY(83, 14);
+		cout << cntX;
 
 	}
 	else if (_TURN == true && validEnter == true)
 	{
 		++cntO;
-		GotoXY(80, 2);
-		cout << "step O:" << cntO;
+		GotoXY(83, 11);
+		cout << cntO;
 	}
 }
 
@@ -334,11 +1337,13 @@ void ShowTurn(int _X, int _Y, bool _TURN, bool validEnter)
 	{
 		GotoXY(80, 0);
 		cout << "Luot cua X danh !!";
+		TurnX();
 	}
 	else if (_TURN == false && validEnter == true)
 	{
 		GotoXY(80, 0);
 		cout << "Luot cua O danh !!";
+		TurnO();
 	}
 	GotoXY(_X, _Y);
 }
@@ -453,7 +1458,7 @@ void HoverFileName(const vector <string>& v, int curPage, int curFile) {
 	TextColor(tmp);
 }
 
-void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& sound, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn) {
+void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& sound, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X) {
 	// Open the file that contains all the name of the saved games.
 	fstream inp;
 	inp.open("save\\all_save.txt", ios::in);
@@ -522,9 +1527,9 @@ void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& s
 			HoverFileName(v, curPage, curFile);
 		}
 		else if (_COMMAND == ENTER) {
-			LoadData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, v[(curPage - 1) * 9 + curFile]);
+			LoadData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, v[(curPage - 1) * 9 + curFile]);
 			LoadingScreen(BLUE, GREEN, LIGHT_CYAN);
-			StartGame(_A, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn);
+			StartGame(_A, 0, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X);
 			return;
 		}
 	}
@@ -590,7 +1595,7 @@ void MainScreen() {
 	DrawButton();
 }
 
-void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& sound, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn)
+void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& sound, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X)
 {
 	LoadingScreen(BLUE, GREEN, LIGHT_CYAN);
 	Sleep(50);
@@ -741,12 +1746,12 @@ void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& sound
 		{
 			if (y == 7)
 			{
-				StartGame(_A, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn);
+				StartGame(_A, 1, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X);
 				return;
 			}
 			if (y == 10)
 			{
-				LoadGameMenu(_A, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn);
+				LoadGameMenu(_A, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X);
 				return;
 			}
 			if (y == 13)
@@ -899,4 +1904,115 @@ void SettingMenu(bool& sound) {
 		if (c == ESC)
 			return;
 	}
+}
+
+void VeX1(int color) {
+	TextColor(color);
+	int x1 = 70;
+	int x3 = 85;
+	int x2 = 110;
+	int y1 = 17;
+	int y2 = 25;
+	SetConsoleOutputCP(65001);
+	GotoXY(x1, y1);
+	ifstream Read("VeX1.txt");
+	string Art = getFileContents(Read);
+	cout << Art << endl;
+	Read.close();
+	SetConsoleOutputCP(437);
+}
+
+void VeX2(int color) {
+	TextColor(color);
+	int x1 = 70;
+	int x3 = 85;
+	int x2 = 110;
+	int y1 = 17;
+	int y2 = 25;
+	SetConsoleOutputCP(65001);
+	GotoXY(x1, y2);
+	ifstream Read("VeX2.txt");
+	string Art = getFileContents(Read);
+	cout << Art << endl;
+	Read.close();
+	SetConsoleOutputCP(437);
+}
+
+void VeO1(int color) {
+	TextColor(color);
+	int x1 = 70;
+	int x3 = 85;
+	int x2 = 110;
+	int y1 = 17;
+	int y2 = 25;
+	SetConsoleOutputCP(65001);
+	GotoXY(x1, y2);
+	ifstream Read("VeO1.txt");
+	string Art = getFileContents(Read);
+	cout << Art << endl;
+	Read.close();
+	SetConsoleOutputCP(437);
+}
+
+void VeO2(int color) {
+	TextColor(color);
+	int x1 = 70;
+	int x3 = 85;
+	int x2 = 110;
+	int y1 = 17;
+	int y2 = 25;
+	SetConsoleOutputCP(65001);
+	GotoXY(x1, y1);
+	ifstream Read("VeO2.txt");
+	string Art = getFileContents(Read);
+	cout << Art << endl;
+	Read.close();
+	SetConsoleOutputCP(437);
+}
+
+void TurnX() {
+	/*VeO1(GRAY);
+	VeX2(RED);*/
+	DrawAsciiFile(0, 17, "VeO1", GRAY);
+	DrawAsciiFile(0, 17, "VeX2", RED);
+}
+
+void TurnO() {
+	/*VeO2(BLUE);
+	VeX1(GRAY);*/
+	DrawAsciiFile(0, 17, "VeO2", BLUE);
+	DrawAsciiFile(0, 17, "VeX1", GRAY);
+}
+
+string getFileContents(ifstream& File)
+{
+	string Lines = "";        //All lines
+
+	if (File)                      //Check if everything is good
+	{
+		while (File.good())
+		{
+			string TempLine;                  //Temp line
+			getline(File, TempLine);        //Get temp line
+			TempLine += "\n";                      //Add newline character
+
+			Lines += TempLine;                     //Add newline
+		}
+		return Lines;
+	}
+	else                           //Return error
+	{
+		return "ERROR File does not exist.";
+	}
+}
+
+void DrawAsciiFile(int x, int y,string nameFile, int color) {
+	TextColor(color);
+	SetConsoleOutputCP(65001);
+	GotoXY(x, y);
+	ifstream Read(nameFile+".txt");
+	string Art = getFileContents(Read);
+	cout << Art << endl;
+	Read.close();
+	SetConsoleOutputCP(437);
 }

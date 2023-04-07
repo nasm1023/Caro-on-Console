@@ -14,6 +14,7 @@
 #include <fstream>
 #include <vector>
 #include <math.h>
+#include <string>
 
 // Namespace
 using namespace std;
