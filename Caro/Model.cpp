@@ -12,7 +12,7 @@ void ResetData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 			_A[i][j].c = 0;
 		}
 	}
-	_TURN = 1; _COMMAND = -1;
+	_COMMAND = -1;
 	_X = _A[0][0].x;
 	_Y = _A[0][0].y;
 	cX = cY = 0;
@@ -137,10 +137,6 @@ void SetupGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND
 	SetConsoleBlank();
 	if (reset) {
 		ResetData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO);
-		EnterNamePlayer(NamePlayer_O, NamePlayer_X);
-		SetConsoleBlank();
-		AskTurn(_TURN, NamePlayer_O, NamePlayer_X);
-		SetConsoleBlank();
 	}
 	ShowTurn(_X, _Y, !_TURN, true);
 	TextColor(BLUE);
@@ -188,12 +184,12 @@ void SetupGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND
 	HoverCell(_A, cY, cX);
 }
 
-void StartGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND, bool& sound, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X) {
+void StartGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND, bool sound[], int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X) {
 	SetupGame(_A, reset, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, cntRound, NamePlayer_O, NamePlayer_X);
 	bool validEnter = true, ok = 0;
 	while (true) {
 		_COMMAND = toupper(_getch());
-		if (sound) PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
+		if (sound[CLICK_SFX]) PlaySound(CLICK_SFX);
 		ok = true;
 		if (_COMMAND == ESC) {
 			return;
@@ -232,8 +228,9 @@ void StartGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND
 					if (AskContinue(_A) != 'Y') {
 						return;
 					}
-					else
+					else {
 						SetupGame(_A, 1, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, cntRound, NamePlayer_O, NamePlayer_X);
+					}
 				}
 			}
 			validEnter = true;
@@ -284,25 +281,55 @@ bool SaveData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, in
 	return 1;
 }
 
-void LoadSound(bool& sound) {
+void LoadSound(bool sound[]) {
 	fstream inp;
 	inp.open(SOUND_PATH, ios::in);
 	if (inp.fail()) {
 		cout << "Can't open file";
 		return;
 	}
-	inp >> sound;
+	int n = sizeof(sound);
+	for (int i = 0; i < n; i++)
+		inp >> sound[i];
+	if (sound[BGM])
+		PlaySound(BGM);
+	else
+		StopSound(BGM);
 	inp.close();
 }
 
-void SetSound(bool& sound, bool value) {
+void SetSound(bool sound[], int type, bool value) {
 	fstream out;
 	out.open(SOUND_PATH, ios::out);
 	if (out.fail()) {
 		cout << "Can't open file";
 		return;
 	}
-	sound = value;
-	out << sound;
+	sound[type] = value;
+	int n = sizeof(sound);
+	for (int i = 0; i < n; i++)
+		out << sound[i] << ' ';
+	LoadSound(sound);
 	out.close();
+}
+
+void PlaySound(int type) {
+	if (type == BGM)
+		mciSendString(L"play assets/sounds/bgm.wav", NULL, 0, NULL);
+	else if (type == CLICK_SFX)
+		//mciSendString(L"play assets/sounds/click_sfx.wav", NULL, 0, NULL);
+		PlaySound(TEXT("assets/sounds/click_sfx.wav"), NULL, SND_ASYNC);
+	else if (type == WIN_SFX)
+		mciSendString(L"play assets/sounds/win_sfx.wav", NULL, 0, NULL);
+}
+
+void StopSound(int type) {
+	if (type == BGM)
+		mciSendString(L"stop assets/sounds/bgm.wav", NULL, 0, NULL);
+}
+
+void ExitGame() {
+	StopSound(BGM);
+	SetConsoleBlank();
+	exit(0);
 }

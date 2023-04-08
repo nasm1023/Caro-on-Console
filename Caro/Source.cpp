@@ -13,7 +13,7 @@ int saveTurn = 0;
 int cntWinO = 0, cntLoseO = 0;
 int cntDraw = 0;
 int cntRound = 1;
-bool sound = 1;
+bool sound[] = { 1, 1, 1 };
 string NamePlayer_O = "", NamePlayer_X = "";
 
 int main() {

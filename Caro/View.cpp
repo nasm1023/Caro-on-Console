@@ -1177,7 +1177,8 @@ char AskContinue(_POINT _A[B_SIZE][B_SIZE])
 	return toupper(_getch());
 }
 
-void AskTurn(bool& _TURN, string& NamePlayer_O, string& NamePlayer_X) { // Hỏi lượt đánh trước
+void AskTurn(bool& _TURN, bool sound[], string& NamePlayer_O, string& NamePlayer_X) { // Hỏi lượt đánh trước
+	SetConsoleBlank();
 	DrawBoxMini(90, 22, 15, 6, GREEN);//vẽ khung to
 	// Vẽ hai ô hiển thị O vs X
 	int wide = 20;
@@ -1206,7 +1207,7 @@ void AskTurn(bool& _TURN, string& NamePlayer_O, string& NamePlayer_X) { // Hỏi
 	bool check = true;
 	while (true) {
 		char press = toupper(_getch());
-		PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
+		if (sound[CLICK_SFX]) PlaySound(CLICK_SFX);
 		if (press == 'D' || press == 'A') {
 			if (press == 'D')
 			{
@@ -1255,7 +1256,7 @@ void AskTurn(bool& _TURN, string& NamePlayer_O, string& NamePlayer_X) { // Hỏi
 	DrawAsciiFile(x + wide / 2, y + high / 2 - 2, "DrawTurnO", BLUE);
 	while (true) {
 		unsigned char c = toupper(_getch());
-		PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
+		if (sound[CLICK_SFX]) PlaySound(CLICK_SFX);
 		if (c == 'A' || c == 'D') {
 			if (c == 'A') {
 				if (x == 50) {
@@ -1290,6 +1291,7 @@ void AskTurn(bool& _TURN, string& NamePlayer_O, string& NamePlayer_X) { // Hỏi
 }
 
 void EnterNamePlayer(string& NamePlayer_O, string& NamePlayer_X) {
+	SetConsoleBlank();
 	DrawAsciiFile(0, 1, "DrawEnterName", BLUE);
 	TextColor(BLUE);
 	GotoXY(11, 11);
@@ -1403,11 +1405,6 @@ void HoverCell(_POINT _A[B_SIZE][B_SIZE], int x, int y) {
 	TextColor(tmp);
 }
 
-void ExitGame() {
-	SetConsoleBlank();
-	exit(0);
-}
-
 void HideCursor() {
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_CURSOR_INFO info;
@@ -1470,7 +1467,7 @@ void HoverFileName(const vector <string>& v, int curPage, int curFile) {
 	TextColor(tmp);
 }
 
-void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& sound, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X) {
+void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool sound[], int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X) {
 	// Open the file that contains all the name of the saved games.
 	fstream inp;
 	inp.open("save\\all_save.txt", ios::in);
@@ -1502,7 +1499,7 @@ void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& s
 	HoverFileName(v, 1, 0);
 	while (true) {
 		int _COMMAND = toupper(_getch());
-		if (sound) PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
+		if (sound[CLICK_SFX]) PlaySound(CLICK_SFX);
 		if (_COMMAND == ESC) {
 			return;
 		}
@@ -1607,7 +1604,7 @@ void MainScreen() {
 	DrawButton();
 }
 
-void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& sound, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X)
+void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool sound[], int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X)
 {
 	LoadingScreen(BLUE, GREEN, LIGHT_CYAN);
 	Sleep(50);
@@ -1624,7 +1621,7 @@ void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& sound
 	while (true)
 	{
 		unsigned char c = toupper(_getch());
-		if (sound) PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
+		if (sound[CLICK_SFX]) PlaySound(CLICK_SFX);
 		if (c == 'W' || c == 'S')
 		{
 			//c = _getch();
@@ -1760,6 +1757,8 @@ void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool& sound
 		{
 			if (y == 7)
 			{
+				EnterNamePlayer(NamePlayer_O, NamePlayer_X);
+				AskTurn(_TURN, sound, NamePlayer_O, NamePlayer_X);
 				StartGame(_A, 1, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X);
 				return;
 			}
@@ -1846,7 +1845,7 @@ void Help2()
 	cout << " " << L_TRIANGLE << " PRESS ESC TO COMEBACK " << R_TRIANGLE << " ";
 }
 
-void HelpScreen(bool sound)
+void HelpScreen(bool sound[])
 {
 	SetConsoleBlank();
 	DrawBox(98, 25, 11, 2, CYAN, 0);
@@ -1860,7 +1859,7 @@ void HelpScreen(bool sound)
 	Help2();
 	while (true) {
 		char c = _getch();
-		if (sound) PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
+		if (sound[CLICK_SFX]) PlaySound(CLICK_SFX);
 		if (c == ESC)
 			return;
 	}
@@ -1903,18 +1902,20 @@ void CreateConsoleWindow(int pWidth, int pHeight)
 	MoveWindow(consoleWindow, 0, 0, pWidth, pHeight, TRUE);
 }
 
-void SettingMenu(bool& sound) {
+void SettingMenu(bool sound[]) {
 	SetConsoleBlank();
 	GotoXY(50, 15);
 	int tmp = GetCurrentColor();
 	TextColor(RED);
-	cout << "Nhan ENTER di!";
+	cout << "Nhan ENTER di! SPACE cung duoc!!";
 	TextColor(tmp);
 	while (true) {
 		char c = _getch();
 		if (c == ENTER)
-			SetSound(sound, sound ^ 1);
-		if (sound) PlaySound(CLICK_SFX, NULL, SND_FILENAME | SND_ASYNC);
+			SetSound(sound, CLICK_SFX, sound[CLICK_SFX] ^ 1);
+		else if (c == SPACE)
+			SetSound(sound, BGM, sound[BGM] ^ 1);
+		if (sound[CLICK_SFX]) PlaySound(CLICK_SFX);
 		if (c == ESC)
 			return;
 	}
@@ -1922,80 +1923,72 @@ void SettingMenu(bool& sound) {
 
 void VeX1(int color) {
 	TextColor(color);
-	int x1 = 70;
-	int x3 = 85;
-	int x2 = 110;
-	int y1 = 17;
-	int y2 = 25;
+	int x = 100, y = 19;
 	SetConsoleOutputCP(65001);
-	GotoXY(x1, y1);
 	ifstream Read("VeX1.txt");
-	string Art = getFileContents(Read);
-	cout << Art << endl;
+	string line = "";
+	for (int i = 0; Read.good(); i++) {
+		getline(Read, line);
+		GotoXY(x, y + i);
+		cout << line;
+	}
 	Read.close();
 	SetConsoleOutputCP(437);
 }
 
 void VeX2(int color) {
 	TextColor(color);
-	int x1 = 70;
-	int x3 = 85;
-	int x2 = 110;
-	int y1 = 17;
-	int y2 = 25;
+	int x = 100, y = 19;
 	SetConsoleOutputCP(65001);
-	GotoXY(x1, y2);
 	ifstream Read("VeX2.txt");
-	string Art = getFileContents(Read);
-	cout << Art << endl;
+	string line = "";
+	for (int i = 0; Read.good(); i++) {
+		getline(Read, line);
+		GotoXY(x, y + i);
+		cout << line;
+	}
 	Read.close();
 	SetConsoleOutputCP(437);
 }
 
 void VeO1(int color) {
 	TextColor(color);
-	int x1 = 70;
-	int x3 = 85;
-	int x2 = 110;
-	int y1 = 17;
-	int y2 = 25;
+	int x = 80, y = 19;
 	SetConsoleOutputCP(65001);
-	GotoXY(x1, y2);
 	ifstream Read("VeO1.txt");
-	string Art = getFileContents(Read);
-	cout << Art << endl;
+	string line = "";
+	for (int i = 0; Read.good(); i++) {
+		getline(Read, line);
+		GotoXY(x, y + i);
+		cout << line;
+	}
 	Read.close();
 	SetConsoleOutputCP(437);
 }
 
 void VeO2(int color) {
 	TextColor(color);
-	int x1 = 70;
-	int x3 = 85;
-	int x2 = 110;
-	int y1 = 17;
-	int y2 = 25;
+	int x = 80, y = 19;
 	SetConsoleOutputCP(65001);
-	GotoXY(x1, y1);
 	ifstream Read("VeO2.txt");
-	string Art = getFileContents(Read);
-	cout << Art << endl;
+	string line = "";
+	for (int i = 0; Read.good(); i++) {
+		getline(Read, line);
+		GotoXY(x, y + i);
+		cout << line;
+	}
 	Read.close();
 	SetConsoleOutputCP(437);
 }
 
 void TurnX() {
-	/*VeO1(GRAY);
-	VeX2(RED);*/
-	DrawAsciiFile(0, 17, "VeO1", GRAY);
-	DrawAsciiFile(0, 17, "VeX2", RED);
+	VeO1(GRAY);
+	VeX2(RED);
 }
 
 void TurnO() {
-	/*VeO2(BLUE);
-	VeX1(GRAY);*/
-	DrawAsciiFile(0, 17, "VeO2", BLUE);
-	DrawAsciiFile(0, 17, "VeX1", GRAY);
+	VeO2(BLUE);
+	VeX1(GRAY);
 }
 
 string getFileContents(ifstream& File)
