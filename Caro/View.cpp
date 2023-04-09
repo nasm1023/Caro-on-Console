@@ -1415,7 +1415,6 @@ void HideCursor() {
 
 void DrawSaveFilesPage(const vector <string>& v, int curPage) {
 	int filePerPage = 9;
-	int tmp = GetCurrentColor();
 	TextColor(YELLOW);
 	GotoXY(WIDTH / 2 - 5, HEIGHT / 2 + 8);
 	cout << "< ";
@@ -1426,8 +1425,8 @@ void DrawSaveFilesPage(const vector <string>& v, int curPage) {
 	if (nPages <= 9)
 		cout << 0;
 	cout << nPages << " >";
-	TextColor(tmp);
 
+	TextColor(CYAN);
 	for (int i = (curPage - 1) * 9, cnt = 1; i < curPage * 9; i++, cnt++) {
 		GotoXY(BOX_X + 1, BOX_Y + 2 * cnt - 1);
 		for (int j = 1; j < BOX_W - 1; j++)

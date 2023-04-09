@@ -186,11 +186,10 @@ void SetupGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND
 
 void StartGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND, bool sound[], int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X) {
 	SetupGame(_A, reset, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, cntRound, NamePlayer_O, NamePlayer_X);
-	bool validEnter = true, ok = 0;
+	bool validEnter = true;
 	while (true) {
 		_COMMAND = toupper(_getch());
 		if (sound[CLICK_SFX]) PlaySound(CLICK_SFX);
-		ok = true;
 		if (_COMMAND == ESC) {
 			return;
 		}
@@ -316,6 +315,7 @@ void SetSound(bool sound[], int type, bool value) {
 void PlaySound(int type) {
 	if (type == BGM)
 		mciSendString(L"play assets/sounds/bgm.wav", NULL, 0, NULL);
+		//PlaySound(TEXT("assets/sounds/bgm.wav"), NULL, SND_ASYNC);
 	else if (type == CLICK_SFX)
 		//mciSendString(L"play assets/sounds/click_sfx.wav", NULL, 0, NULL);
 		PlaySound(TEXT("assets/sounds/click_sfx.wav"), NULL, SND_ASYNC);
