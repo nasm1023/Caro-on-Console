@@ -29,6 +29,7 @@ using namespace std;
 #define BOARD_Y 2
 
 // Color code
+#define BLACK (15 << 4)
 #define BLUE ((15 << 4) | 1)
 #define GREEN ((15 << 4) | 2)
 #define CYAN ((15 << 4) | 3)
@@ -93,4 +94,9 @@ struct _POINT {
 	int x, y, c;
 	// x, y: coordinate
 	// c -> {0, 1, 2}, 0: vacant, 1: player X, 2: player O
+};
+
+struct _BUTTON {
+	int x, y;
+	string data;
 };

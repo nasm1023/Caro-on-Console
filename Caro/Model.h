@@ -15,4 +15,5 @@ void LoadSound(bool sound[]);
 void SetSound(bool sound[], int type, bool value);
 void PlayAudio(int type);
 void StopSound(int type);
+void PauseGame(bool sound[], float& remain, float& lastPressed);
 void ExitGame();

@@ -298,19 +298,19 @@ void DrawBanner(int x, int y, int color) {
 
 void AskTurn(bool& _TURN, bool sound[], string& NamePlayer_O, string& NamePlayer_X) { // Hỏi lượt đánh trước
 	SetConsoleBlank();
-	DrawBoxMini(90, 22, 15, 6, GREEN);//vẽ khung to
+	DrawBoxMini(63, 18, 32, 8, GREEN);//vẽ khung to
 	// Vẽ hai ô hiển thị O vs X
 	int wide = 20;
 	int high = 10;
 	int x = 20;
 	int y = 10;
 	DrawAsciiFile(0, 1, "DrawTurn", BLUE);
-	DrawAsciiFile(x + wide / 2, y + high / 2 - 2, "DrawTurnO", GRAY);
-	DrawAsciiFile(x + wide / 2, y + high / 2 - 2, "DrawTurnX", GRAY);
+	VeO1(43, 17, GRAY);
+	VeX1(76, 17, GRAY);
 	// Vẽ ô hiển thị tên
 	int WideBoxName = 30;
 	int HighBoxName = 3;
-	int X_BoxName = 44;
+	int X_BoxName = 48;
 	int Y_BoxName = 10;
 	DrawBoxMini(WideBoxName, HighBoxName, X_BoxName, Y_BoxName, MAGENTA);
 	GotoXY(X_BoxName + WideBoxName / 2 - NamePlayer_O.size() / 2, Y_BoxName + 1);
@@ -372,23 +372,24 @@ void AskTurn(bool& _TURN, bool sound[], string& NamePlayer_O, string& NamePlayer
 		}
 	}
 	GotoXY(x, y);
-	DrawAsciiFile(x + wide / 2, y + high / 2 - 2, "DrawTurnO", BLUE);
+	//DrawAsciiFile(x + wide / 2, y + high / 2 - 2, "DrawTurnO", BLUE);
+	VeO2(43, 17, O_COLOR);
 	while (true) {
 		unsigned char c = toupper(_getch());
 		if (sound[CLICK_SFX]) PlayAudio(CLICK_SFX);
 		if (c == 'A' || c == 'D') {
 			if (c == 'A') {
 				if (x == 50) {
-					DrawAsciiFile(x + wide / 2, y + high / 2 - 2, "DrawTurnX", GRAY);
+					VeO2(43, 17, O_COLOR);
+					VeX1(76, 17, GRAY);
 					x -= 30;
-					DrawAsciiFile(x + wide / 2, y + high / 2 - 2, "DrawTurnO", BLUE);
 				}
 			}
 			else if (c == 'D') {
 				if (x == 20) {
-					DrawAsciiFile(x + wide / 2, y + high / 2 - 2, "DrawTurnO", GRAY);
+					VeO1(43, 17, GRAY);
+					VeX2(76, 17, X_COLOR);
 					x += 30;
-					DrawAsciiFile(x + wide / 2, y + high / 2 - 2, "DrawTurnX", RED);
 				}
 			}
 		}
@@ -409,37 +410,6 @@ void AskTurn(bool& _TURN, bool sound[], string& NamePlayer_O, string& NamePlayer
 	}
 }
 
-//void EnterNamePlayer(string& NamePlayer_O, string& NamePlayer_X) {
-//	SetConsoleBlank();
-//	HideCursor(0);
-//	DrawAsciiFile(0, 1, "DrawEnterName", BLUE);
-//	TextColor(BLUE);
-//	GotoXY(11, 11);
-//	cout << "Enter Name Player 1 (20 character max): "; 
-//	while (true) {
-//		getline(cin, NamePlayer_O);
-//		if (NamePlayer_O.size() <= 20)
-//			break;
-//		GotoXY(51, 11);
-//		for (int i = 0; i < NamePlayer_O.size(); i++)
-//			cout << ' ';
-//		GotoXY(51, 11);
-//	}
-//
-//	GotoXY(11, 12);
-//	cout << "Enter Name Player 2 (20 character max): "; 
-//	while (true) {
-//		getline(cin, NamePlayer_X);
-//		if (NamePlayer_X.size() <= 20)
-//			break;
-//		GotoXY(51, 12);
-//		for (int i = 0; i < NamePlayer_X.size(); i++)
-//			cout << ' ';
-//		GotoXY(51, 12);
-//	}
-//	HideCursor(1);
-//}
-
 void DrawEnterName(int x, int y, int color) {
 	TextColor(color);
 	SetConsoleOutputCP(65001);
@@ -458,19 +428,16 @@ void EnterNamePlayer(string& NamePlayer_O, string& NamePlayer_X) {
 	unsigned char x = 16;
 	SetConsoleBlank();
 	HideCursor(0);
-	DrawBanner(15, 2, RED);
+	DrawBanner(15, 2, GREEN);
 	DrawEnterName(30, 3, MAGENTA);
-	TextColor(GRAY);
+	TextColor(BLACK);
 	GotoXY(50, 27);
 	cout << "< 20 character max >";
-	TextColor(BLUE);
 	DrawBoxMini(49, 3, 35, 14, GREEN);
+	TextColor(CYAN);
 	GotoXY(51, 13); cout << " Player 1's Name ";
-	DrawBoxMini(49, 3, 35, 19, GREEN);
-	GotoXY(51, 18); cout << " Player 2's Name ";
 	TextColor(RED);
 	GotoXY(48, 15); cout << x;
-	GotoXY(48, 20); cout << x;
 	while (true) {
 		GotoXY(53, 15);
 		getline(cin, NamePlayer_O);
@@ -481,6 +448,11 @@ void EnterNamePlayer(string& NamePlayer_O, string& NamePlayer_X) {
 			cout << ' ';
 		GotoXY(53, 15);
 	}
+	DrawBoxMini(49, 3, 35, 19, GREEN);
+	TextColor(CYAN);
+	GotoXY(51, 18); cout << " Player 2's Name ";
+	TextColor(RED);
+	GotoXY(48, 20); cout << x;
 	while (true) {
 		GotoXY(53, 20);
 		getline(cin, NamePlayer_X);
@@ -1189,7 +1161,7 @@ void DrawAsciiFile(int x, int y,string nameFile, int color) {
 	SetConsoleOutputCP(437);
 }
 
-void ShowTimer(float time) {
+void DrawTimer(float time, bool _TURN) {
 	time = float(int(time * 100)) / 100;
 	//DrawNumber(69, 21, 0, MAGENTA);
 	int num[4] = { 0 };
@@ -1199,6 +1171,61 @@ void ShowTimer(float time) {
 	num[3] = int(time * 100) % 10;
 	for (int i = 0; i < 4; i++)
 		DrawNumber(68 + i * 10 + 4 * (i > 1), 21, num[i], YELLOW);
+}
+
+void DrawTimerBox(bool _TURN) {
+	DrawBox(46, 9, 65, 20, (_TURN ? O_COLOR : X_COLOR), 0);
+	DrawAsciiFile(68 + 2 * 10, 26, "Dot", YELLOW);
+}
+
+void DrawScoreBoard(bool _TURN, int _X, int _Y, int cntWinO, int cntLoseO, int cntRound) {
+	unsigned char p = 219;
+	DrawBox(50, 17, 63, 3, LIGHT_MAGENTA, 0);
+	for (int i = 0; i < 49; i++)
+	{
+		TextColor(MAGENTA);
+		GotoXY(64 + i, 2); cout << H_LINE;
+	}
+	TextColor(BLUE);
+	GotoXY(82, 2);
+	cout << " - ROUND " << cntRound << " - ";
+	ShowTurn(_X, _Y, !_TURN, true);
+	TextColor(LIGHT_MAGENTA);
+	DrawNumber(74, 12, cntLoseO, LIGHT_CYAN);
+	DrawNumber(96, 12, cntWinO, LIGHT_CYAN);
+	GotoXY(88, 14); cout << p << p;
+	GotoXY(88, 16); cout << p << p;
+
+	TextColor(LIGHT_MAGENTA);
+	GotoXY(63, 11); cout << BOX_LEFT;
+	for (int i = 0; i < 49; i++)
+	{
+		GotoXY(64 + i, 11);
+		cout << BOX_H_LINE;
+	}
+	cout << BOX_RIGHT;
+	TextColor(BLUE);
+	GotoXY(83, 11); cout << " - SCORE - ";
+
+}
+
+void DrawGameInfo(_POINT _A[B_SIZE][B_SIZE], bool _TURN, int _X, int _Y, int cX, int cY, int cntWinO, int cntLoseO, int cntRound) {
+	DrawBoard(B_SIZE, B_SIZE, BOARD_X, BOARD_Y, BLACK);
+	DrawScoreBoard(_TURN, _X, _Y, cntWinO, cntLoseO, cntRound);
+	DrawTimerBox(_TURN);
+	for (int i = 0; i < B_SIZE; i++)
+		for (int j = 0; j < B_SIZE; j++)
+			if (_A[i][j].c == -1) {
+				GotoXY(_A[i][j].x, _A[i][j].y);
+				TextColor(X_COLOR);
+				cout << 'X';
+			}
+			else if (_A[i][j].c == 1) {
+				GotoXY(_A[i][j].x, _A[i][j].y);
+				TextColor(O_COLOR);
+				cout << 'O';
+			}
+	HoverCell(_A, cY, cX);
 }
 
 void DrawNumber(int x, int y, int number, int color) {
@@ -1216,4 +1243,24 @@ void DrawNumber(int x, int y, int number, int color) {
 	}
 	Read.close();
 	SetConsoleOutputCP(437);
+}
+
+void ClearBox(int w, int h, int x, int y) {
+	for (int i = 0; i < h; i++) {
+		GotoXY(x, y + i);
+		for (int j = 0; j < w; j++)
+			cout << ' ';
+	}
+}
+
+void UnhoverButton(_BUTTON a, int color) {
+	TextColor(color);
+	GotoXY(a.x, a.y);
+	cout << a.data;
+}
+
+void HoverButton(_BUTTON a) {
+	TextColor(RED & 15 | BACKGROUND_YELLOW);
+	GotoXY(a.x, a.y);
+	cout << a.data;
 }

@@ -24,20 +24,23 @@ void ResetData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 int TestBoard(_POINT _A[B_SIZE][B_SIZE], int& saveTurn, int& cntWinO, int& cntLoseO, int& cntDraw, int& cntRound, bool check) {
 	if (check == true && saveTurn == 1)
 	{
-		cntRound++;
-		cntWinO++;
+		if (++cntRound > 9)
+			cntRound = 1;
+		cntWinO = (cntWinO + 1) % 10;
 		return 1; // trả về 1 nếu O thắng
 	}
 	else if (check == true && saveTurn == -1)
 	{
-		cntRound++;
-		cntLoseO++;
+		if (++cntRound > 9)
+			cntRound = 1;
+		cntLoseO = (cntLoseO + 1) % 10;
 		return -1; // trả về -1 nếu X thắng
 	}
 	else if (check == false && CheckFullBoard(_A) == true)
 	{
-		cntRound++;
-		cntDraw++;
+		if (++cntRound > 9)
+			cntRound = 1;
+		cntDraw = (cntDraw + 1) % 10;
 		return 0; // trả về không nếu không có người nào thắng và đã đánh full board
 	}
 	return 2;
@@ -135,58 +138,68 @@ int CheckBoard(_POINT _A[B_SIZE][B_SIZE], bool _TURN, int pX, int pY)
 // Hàm bắt đầu game và khởi tạo dữ liệu
 void SetupGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int cntWinO, int cntLoseO, int cntDraw, int& cntRound, string& NamePlayer_O, string& NamePlayer_X) {
 	SetConsoleBlank();
-	unsigned char p = 219;
 	if (reset) {
 		ResetData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO);
 	}
-	DrawBox(50, 17, 63, 3, LIGHT_MAGENTA, 0);
-	//DrawBox(20, 3, 78, 1, LIGHT_MAGENTA, 0);
-	for (int i = 0; i < 49; i++)
-	{
-		TextColor(MAGENTA);
-		GotoXY(64 + i, 2); cout << H_LINE;
-	}
-	TextColor(BLUE);
-	GotoXY(82, 2);
-	cout << " - ROUND " << cntRound << " - ";
-	ShowTurn(_X, _Y, !_TURN, true);
-	TextColor(LIGHT_MAGENTA);
-	DrawNumber(74, 12, cntLoseO, LIGHT_CYAN);
-	DrawNumber(96, 12, cntWinO, LIGHT_CYAN);
-	GotoXY(88, 14); cout << p << p;
-	GotoXY(88, 16); cout << p << p;
-
-	TextColor(LIGHT_MAGENTA);
-	GotoXY(63, 11); cout << BOX_LEFT;
-	for (int i = 0; i < 49; i++)
-	{
-		GotoXY(64 + i, 11);
-		cout << BOX_H_LINE;
-	}
-	cout << BOX_RIGHT;
-	TextColor(BLUE);
-	GotoXY(83, 11); cout << " - SCORE - ";
-	DrawBoard(B_SIZE, B_SIZE, BOARD_X, BOARD_Y, GREEN);
-	DrawBox(46, 9, 65, 20, GREEN, 0);
-	DrawAsciiFile(68 + 2 * 10, 26, "Dot", YELLOW);
-	for (int i = 0; i < B_SIZE; i++)
-		for (int j = 0; j < B_SIZE; j++)
-			if (_A[i][j].c == -1) {
-				GotoXY(_A[i][j].x, _A[i][j].y);
-				TextColor(X_COLOR);
-				cout << 'X';
-			}
-			else if (_A[i][j].c == 1) {
-				GotoXY(_A[i][j].x, _A[i][j].y);
-				TextColor(O_COLOR);
-				cout << 'O';
-			}
-	HoverCell(_A, cY, cX);
+	DrawGameInfo(_A, _TURN, _X, _Y, cX, cY, cntWinO, cntLoseO, cntRound);
 }
 
-void PauseGame(float& remain, float& lastPressed) {
+void PauseGame(bool sound[], float& remain, float& lastPressed) {
 	remain += lastPressed - clock();
-	_getch();
+	ClearBox(49, 15, 64, 4);
+	TextColor(BLACK);
+	GotoXY(23, 1);
+	cout << "PAUSED";
+	TextColor(LIGHT_MAGENTA);
+	GotoXY(63, 11);
+	cout << BOX_V_LINE;
+	GotoXY(113, 11);
+	cout << BOX_V_LINE;
+	//DrawBoxMini(14, 15, 65, 4, LIGHT_MAGENTA);
+	for (int i = 0; i < 15; i++) {
+		GotoXY(78, 4 + i);
+		cout << V_LINE;
+	}
+	int x = 65, y = 5;
+	vector <_BUTTON> button;
+	button.resize(5);
+	button[0].data = "    SAVE    ";
+	button[1].data = "    LOAD    ";
+	button[2].data = "   OPTION   ";
+	button[3].data = "   RESUME   ";
+	button[4].data = "    EXIT    ";
+	for (int i = 0; i < button.size(); i++) {
+		button[i].x = x;
+		button[i].y = y + 3 * i;
+	}
+	TextColor(BLACK);
+	int n = button.size();
+	for (int i = 0; i < n; i++) {
+		GotoXY(button[i].x, button[i].y);
+		cout << button[i].data;
+	}
+	char c;
+	int cur = 0, prv = -1;
+	HoverButton(button[cur]);
+	while (true) {
+		c = toupper(_getch());
+		if (sound[CLICK_SFX]) PlayAudio(CLICK_SFX);
+		if (c == ESC)
+			break;
+		else if (c == W)
+			prv = cur--;
+		else if (c == S)
+			prv = cur++;
+		if (cur < 0)
+			cur = n - 1;
+		if (cur >= n)
+			cur = 0;
+		UnhoverButton(button[prv], BLACK);
+		HoverButton(button[cur]);
+	}
+	TextColor(BLACK);
+	GotoXY(23, 1);
+	cout << "      ";
 	lastPressed = clock();
 }
 
@@ -195,10 +208,11 @@ void StartGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND
 	bool validEnter = true;
 	float lastPressed = clock(), remain = 15e3;
 	while (true) {
-		ShowTimer((lastPressed + remain - clock()) / 1000.0);
+		DrawTimer((lastPressed + remain - clock()) / 1000.0, _TURN);
 		if (((lastPressed + remain - clock()) / 1000.0) < 0) {
 			ShowTurn(_X, _Y, _TURN, 1);
 			_TURN = !_TURN;
+			DrawTimerBox(_TURN);
 			remain = 15e3;
 			lastPressed = clock();
 		}
@@ -206,7 +220,8 @@ void StartGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND
 			_COMMAND = toupper(_getch());
 			if (sound[CLICK_SFX]) PlayAudio(CLICK_SFX);
 			if (_COMMAND == ESC) {
-				PauseGame(remain, lastPressed);
+				PauseGame(sound, remain, lastPressed);
+				DrawScoreBoard(_TURN, _X, _Y, cntWinO, cntLoseO, cntRound);
 				continue;
 			}
 			// Điều khiển
@@ -247,10 +262,11 @@ void StartGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND
 							SetupGame(_A, 1, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, cntRound, NamePlayer_O, NamePlayer_X);
 						}
 					}
+					DrawTimerBox(_TURN);
+					remain = 15e3;
+					lastPressed = clock();
 				}
 				validEnter = true;
-				remain = 15e3;
-				lastPressed = clock();
 			}
 			else if (_COMMAND == 'A') MoveLeft(_A, _X, _Y, cX, cY);
 			else if (_COMMAND == 'W') MoveUp(_A, _X, _Y, cX, cY);
