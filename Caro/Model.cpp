@@ -144,7 +144,7 @@ void SetupGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND
 	DrawGameInfo(_A, _TURN, _X, _Y, cX, cY, cntWinO, cntLoseO, cntRound);
 }
 
-void PauseGame(bool sound[], float& remain, float& lastPressed) {
+bool PauseGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool sound[], int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X, float& remain, float& lastPressed) {
 	remain += lastPressed - clock();
 	ClearBox(49, 15, 64, 4);
 	TextColor(BLACK);
@@ -180,27 +180,45 @@ void PauseGame(bool sound[], float& remain, float& lastPressed) {
 	}
 	char c;
 	int cur = 0, prv = -1;
+	bool ok = 0;
 	HoverButton(button[cur]);
 	while (true) {
 		c = toupper(_getch());
 		if (sound[CLICK_SFX]) PlayAudio(CLICK_SFX);
 		if (c == ESC)
 			break;
-		else if (c == W)
-			prv = cur--;
-		else if (c == S)
-			prv = cur++;
-		if (cur < 0)
-			cur = n - 1;
-		if (cur >= n)
-			cur = 0;
-		UnhoverButton(button[prv], BLACK);
-		HoverButton(button[cur]);
+		else if (c == W || c == S) {
+			if (c == W)
+				prv = cur--;
+			else
+				prv = cur++;
+			if (cur < 0)
+				cur = n - 1;
+			if (cur >= n)
+				cur = 0;
+			UnhoverButton(button[prv], BLACK);
+			HoverButton(button[cur]);
+		}
+		else if (c == ENTER) {
+			if (cur == 4) {
+				ok = 1;
+				break;
+			}
+			if (cur == 3)
+				break;
+			if (cur == 1) {
+				//UnhoverButton(button[cur], BLACK);
+				LoadGameInPauseMenu(_A, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X);
+				ClearBox(34, 15, 79, 4);
+				//HoverButton(button[cur]);
+			}
+		}
 	}
 	TextColor(BLACK);
 	GotoXY(23, 1);
 	cout << "      ";
 	lastPressed = clock();
+	return ok;
 }
 
 void StartGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND, bool sound[], int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X) {
@@ -220,8 +238,10 @@ void StartGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND
 			_COMMAND = toupper(_getch());
 			if (sound[CLICK_SFX]) PlayAudio(CLICK_SFX);
 			if (_COMMAND == ESC) {
-				PauseGame(sound, remain, lastPressed);
+				bool ok = PauseGame(_A, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, remain, lastPressed);
 				DrawScoreBoard(_TURN, _X, _Y, cntWinO, cntLoseO, cntRound);
+				if (ok)
+					return;
 				continue;
 			}
 			// Điều khiển
@@ -361,6 +381,19 @@ void PlayAudio(int type) {
 void StopSound(int type) {
 	if (type == BGM)
 		mciSendString(L"stop assets/sounds/bgm.wav", NULL, 0, NULL);
+}
+
+string CleanFileName(string s) {
+	int i = 0;
+	while (s[i] == ' ')
+		i++;
+	while (s.back() == ' ')
+		//s.erase(s.size() - 1, 1);
+		s.pop_back();
+	string res = "";
+	for (; i < s.size(); i++)
+		res += s[i];
+	return res;
 }
 
 void ExitGame() {

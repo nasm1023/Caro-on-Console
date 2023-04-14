@@ -542,58 +542,56 @@ void HideCursor(bool ok) {
 	SetConsoleCursorInfo(consoleHandle, &info);
 }
 
-void DrawSaveFilesPage(const vector <string>& v, int curPage) {
-	int filePerPage = 9;
+void DrawSaveFilesPage(const vector <_BUTTON>& v, int curPage, int filesPerPage) {
 	TextColor(YELLOW);
 	GotoXY(WIDTH / 2 - 5, HEIGHT / 2 + 8);
 	cout << "< ";
-	if (curPage <= 9)
+	if (curPage <= filesPerPage)
 		cout << "0";
 	cout << curPage << " / ";
-	int nPages = ceil(1.0 * v.size() / filePerPage);
-	if (nPages <= 9)
+	int nPages = ceil(1.0 * v.size() / filesPerPage);
+	if (nPages <= filesPerPage)
 		cout << 0;
 	cout << nPages << " >";
 
 	TextColor(CYAN);
-	for (int i = (curPage - 1) * 9, cnt = 1; i < curPage * 9; i++, cnt++) {
+	for (int i = (curPage - 1) * filesPerPage, cnt = 1; i < curPage * filesPerPage; i++, cnt++) {
 		GotoXY(BOX_X + 1, BOX_Y + 2 * cnt - 1);
-		for (int j = 1; j < BOX_W - 1; j++)
+		for (int j = 1; j < BOX_W; j++)
 			cout << " ";
 		if (i < v.size()) {
-			int n = v[i].size();
-			GotoXY(WIDTH / 2 - n / 2, BOX_Y + 2 * cnt - 1);
+			GotoXY(v[i].x, v[i].y);
 			Sleep(50);
-			cout << v[i];
+			cout << v[i].data;
 		}
 	}
 }
 
-void UnhoverFileName(const vector <string>& v, int curPage, int curFile) {
-	int id = 9 * (curPage - 1) + curFile;
-	TextColor(CYAN);
-	GotoXY(BOX_X + 1, BOX_Y + 2 * (curFile + 1) - 1);
-	for (int j = 1; j < BOX_W - 1; j++)
-		cout << " ";
-	int n = v[id].size();
-	GotoXY(WIDTH / 2 - n / 2, BOX_Y + 2 * (curFile + 1) - 1);
-	cout << v[id];
-}
+//void UnhoverFileName(const vector <string>& v, int curPage, int curFile) {
+//	int id = 9 * (curPage - 1) + curFile;
+//	TextColor(CYAN);
+//	GotoXY(BOX_X + 1, BOX_Y + 2 * (curFile + 1) - 1);
+//	for (int j = 1; j < BOX_W - 1; j++)
+//		cout << " ";
+//	int n = v[id].size();
+//	GotoXY(WIDTH / 2 - n / 2, BOX_Y + 2 * (curFile + 1) - 1);
+//	cout << v[id];
+//}
 
-void HoverFileName(const vector <string>& v, int curPage, int curFile) {
-	int id = 9 * (curPage - 1) + curFile;
-	int tmp = GetCurrentColor();
-	TextColor(RED & 15 | BACKGROUND_YELLOW);
-	GotoXY(BOX_X + 1, BOX_Y + 2 * (curFile + 1) - 1);
-	cout << "        " << L_TRIANGLE;
-	for (int j = 9; j < BOX_W - 11; j++) 
-		cout << " ";
-	cout << R_TRIANGLE << "        ";
-	int n = v[id].size();
-	GotoXY(WIDTH / 2 - n / 2, BOX_Y + 2 * (curFile + 1) - 1);
-	cout << v[id];
-	TextColor(tmp);
-}
+//void HoverFileName(const vector <string>& v, int curPage, int curFile) {
+//	int id = 9 * (curPage - 1) + curFile;
+//	int tmp = GetCurrentColor();
+//	TextColor(RED & 15 | BACKGROUND_YELLOW);
+//	GotoXY(BOX_X + 1, BOX_Y + 2 * (curFile + 1) - 1);
+//	cout << "        " << L_TRIANGLE;
+//	for (int j = 9; j < BOX_W - 11; j++) 
+//		cout << " ";
+//	cout << R_TRIANGLE << "        ";
+//	int n = v[id].size();
+//	GotoXY(WIDTH / 2 - n / 2, BOX_Y + 2 * (curFile + 1) - 1);
+//	cout << v[id];
+//	TextColor(tmp);
+//}
 
 void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool sound[], int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X) {
 	// Open the file that contains all the name of the saved games.
@@ -611,66 +609,181 @@ void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool so
 
 	// Get the current save data
 	string nameFile;
-	int filePerPage = 9;
-	vector <string> v;
+	int filesPerPage = 9;
+	vector <_BUTTON> v;
 	while (inp >> nameFile) {
-		v.push_back(nameFile);
+		v.push_back({ 0, 0, nameFile });
+	}
+	inp.close();
+	for (int i = 0, cnt = 1; i < v.size(); i++, cnt = cnt % filesPerPage + 1) {
+		//GotoXY(BOX_X + 1, BOX_Y + 2 * cnt - 1);
+		v[i].x = BOX_X + 1;
+		v[i].y = BOX_Y + 2 * cnt - 1;
+		int x = (BOX_W - 2 - v[i].data.size()) / 2;
+		if (v[i].data.size() % 2 == 1)
+			v[i].data += " ";
+		while (x--)
+			v[i].data = " " + v[i].data, v[i].data += " ";
+		v[i].data += " ";
 	}
 	int nFiles = v.size();
-	int nPages = ceil(1.0 * nFiles / filePerPage);
-
-	int curFile = 0, curPage = 1;
-	DrawSaveFilesPage(v, 1);
+	int nPages = ceil(1.0 * nFiles / filesPerPage);
+	DrawSaveFilesPage(v, 1, filesPerPage);
 	GotoXY(47, 26);
 	TextColor(MAGENTA);
 	cout << " " << L_TRIANGLE << " PRESS ESC TO COMEBACK " << R_TRIANGLE << " ";
-	HoverFileName(v, 1, 0);
+	int curFile = 0, prvFile = -1, curPage = 1, lastFile = 0;
+	HoverButton(v[curFile]);
 	while (true) {
 		int _COMMAND = toupper(_getch());
 		if (sound[CLICK_SFX]) PlayAudio(CLICK_SFX);
+		lastFile = (curPage == nPages ? (nFiles - 1) % filesPerPage : filesPerPage - 1);
 		if (_COMMAND == ESC) {
 			return;
 		}
-		else if (_COMMAND == 'S') {
-			UnhoverFileName(v, curPage, curFile);
-			curFile = (curFile + 1) % filePerPage;
-			if (curPage == nPages && curFile + 9 * (curPage - 1) >= nFiles)
+		else if (_COMMAND == W) {
+			prvFile = curFile--;
+			if (curFile < 0)
+				curFile = lastFile;
+		}
+		else if (_COMMAND == S) {
+			prvFile = curFile++;
+			if (curFile > lastFile)
 				curFile = 0;
-			HoverFileName(v, curPage, curFile);
 		}
-		else if (_COMMAND == 'W') {
-			UnhoverFileName(v, curPage, curFile);
-			curFile = (curFile - 1 + filePerPage) % filePerPage;
-			if (curPage == nPages && curFile + 9 * (curPage - 1) >= nFiles)
-				curFile = nFiles % 9 - 1;
-			HoverFileName(v, curPage, curFile);
-		}
-		else if (_COMMAND == 'A') {
-			curPage--;
-			if (curPage == 0)
+		else if (_COMMAND == A) {
+			if (--curPage < 1)
 				curPage = nPages;
-			if (curPage == nPages && curFile + 9 * (curPage - 1) >= nFiles)
-				curFile = nFiles % 9 - 1;
-			DrawSaveFilesPage(v, curPage);
-			HoverFileName(v, curPage, curFile);
+			prvFile = curFile;
+			DrawSaveFilesPage(v, curPage, filesPerPage);
 		}
-		else if (_COMMAND == 'D') {
+		else if (_COMMAND == D) {
 			curPage++;
-			if (curPage == nPages && curFile + 9 * (curPage - 1) >= nFiles)
-				curFile = nFiles % 9 - 1;
-			else if (curPage > nPages)
+			if (curPage > nPages)
 				curPage = 1;
-			DrawSaveFilesPage(v, curPage);
-			HoverFileName(v, curPage, curFile);
+			prvFile = curFile;
+			DrawSaveFilesPage(v, curPage, filesPerPage);
 		}
 		else if (_COMMAND == ENTER) {
-			LoadData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, v[(curPage - 1) * 9 + curFile]);
+			LoadData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, CleanFileName(v[(curPage - 1) * 9 + curFile].data));
 			LoadingScreen(BLUE, GREEN, LIGHT_CYAN);
 			StartGame(_A, 0, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X);
 			return;
 		}
+		
+		lastFile = (curPage == nPages ? (nFiles - 1) % filesPerPage : filesPerPage - 1);
+		
+		if (curFile + filesPerPage * (curPage - 1) >= nFiles)
+			prvFile = curFile = lastFile;
+		UnhoverButton(v[prvFile + filesPerPage * (curPage - 1)], CYAN);
+		HoverButton(v[curFile + filesPerPage * (curPage - 1)]);
+	}
+}
+
+void DrawSaveFilesPageInPauseMenu(const vector <_BUTTON>& v, int curPage, int filesPerPage) {
+	TextColor(MAGENTA);
+	GotoXY(84, 16);
+	for (int i = 0; i < 24; i++)
+		cout << H_LINE;
+	TextColor(BLACK);
+	GotoXY(90, 17);
+	cout << "< ";
+	if (curPage <= filesPerPage)
+		cout << "0";
+	cout << curPage << " / ";
+	int nPages = ceil(1.0 * v.size() / filesPerPage);
+	if (nPages <= filesPerPage)
+		cout << 0;
+	cout << nPages << " >";
+
+	TextColor(BLUE);
+	for (int i = (curPage - 1) * filesPerPage, cnt = 0; i < curPage * filesPerPage; i++, cnt++) {
+		GotoXY(79, 5 + 2 * cnt);
+		for (int j = 0; j < 30; j++)
+			cout << " ";
+		if (i < v.size()) {
+			GotoXY(v[i].x, v[i].y);
+			Sleep(50);
+			cout << v[i].data;
+		}
+	}
+}
+
+void LoadGameInPauseMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool sound[], int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X) {
+	// Open the file that contains all the name of the saved games.
+	fstream inp;
+	inp.open("save\\all_save.txt", ios::in);
+	if (inp.fail()) {
+		cout << "Can't open file\n";
+		return;
+	}
+	// Get the current save data
+	string nameFile;
+	int filesPerPage = 6;
+	vector <_BUTTON> v;
+	while (inp >> nameFile) {
+		v.push_back({ 0, 0, nameFile });
 	}
 	inp.close();
+	for (int i = 0, cnt = 1; i < v.size(); i++, cnt = cnt % filesPerPage + 1) {
+		v[i].x = 84;
+		v[i].y = 4 + 2 * cnt - 1;
+		int x = (24 - v[i].data.size()) / 2;
+		if (v[i].data.size() % 2 == 1)
+			v[i].data += " ";
+		while (x--)
+			v[i].data = " " + v[i].data, v[i].data += " ";
+	}
+	int nFiles = v.size();
+	int nPages = ceil(1.0 * nFiles / filesPerPage);
+	DrawSaveFilesPageInPauseMenu(v, 1, filesPerPage);
+	int curFile = 0, prvFile = -1, curPage = 1, lastFile = 0;
+	HoverButton(v[curFile]);
+	while (true) {
+		int _COMMAND = toupper(_getch());
+		if (sound[CLICK_SFX]) PlayAudio(CLICK_SFX);
+		lastFile = (curPage == nPages ? (nFiles - 1) % filesPerPage : filesPerPage - 1);
+		if (_COMMAND == ESC) {
+			return;
+		}
+		else if (_COMMAND == W) {
+			prvFile = curFile--;
+			if (curFile < 0)
+				curFile = lastFile;
+		}
+		else if (_COMMAND == S) {
+			prvFile = curFile++;
+			if (curFile > lastFile)
+				curFile = 0;
+		}
+		else if (_COMMAND == A) {
+			if (--curPage < 1)
+				curPage = nPages;
+			prvFile = curFile;
+			DrawSaveFilesPageInPauseMenu(v, curPage, filesPerPage);
+		}
+		else if (_COMMAND == D) {
+			curPage++;
+			if (curPage > nPages)
+				curPage = 1;
+			prvFile = curFile;
+			DrawSaveFilesPageInPauseMenu(v, curPage, filesPerPage);
+		}
+		else if (_COMMAND == ENTER) {
+			continue;
+			LoadData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, CleanFileName(v[(curPage - 1) * 9 + curFile].data));
+			LoadingScreen(BLUE, GREEN, LIGHT_CYAN);
+			StartGame(_A, 0, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X);
+			return;
+		}
+
+		lastFile = (curPage == nPages ? (nFiles - 1) % filesPerPage : filesPerPage - 1);
+
+		if (curFile + filesPerPage * (curPage - 1) >= nFiles)
+			prvFile = curFile = lastFile;
+		UnhoverButton(v[prvFile + filesPerPage * (curPage - 1)], BLUE);
+		HoverButton(v[curFile + filesPerPage * (curPage - 1)]);
+	}
 }
 
 void DrawCaroBox(int w, int h, int x, int y, int Time)
@@ -1246,11 +1359,14 @@ void DrawNumber(int x, int y, int number, int color) {
 }
 
 void ClearBox(int w, int h, int x, int y) {
+	int tmp = GetCurrentColor();
+	TextColor(CYAN);
 	for (int i = 0; i < h; i++) {
 		GotoXY(x, y + i);
 		for (int j = 0; j < w; j++)
 			cout << ' ';
 	}
+	TextColor(tmp);
 }
 
 void UnhoverButton(_BUTTON a, int color) {

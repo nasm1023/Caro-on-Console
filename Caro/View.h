@@ -25,10 +25,8 @@ void ShowTurn(int _X, int _Y, bool _TURN, bool validEnter);
 void UnHoverCell(_POINT _A[B_SIZE][B_SIZE], int x, int y);
 void HoverCell(_POINT _A[B_SIZE][B_SIZE], int x, int y);
 void HideCursor(bool ok);
-void DrawSaveFilesPage(const vector <string>& v, int curPage);
+void DrawSaveFilesPage(const vector <string>& v, int curPage, int filesPerPage);
 void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool sound[], int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X);
-void UnhoverFileName(const vector <string>& v, int curPage, int curFile);
-void HoverFileName(const vector <string>& v, int curPage, int curFile);
 void Help1();
 void Help2();
 void HelpScreen(bool sound[]);
@@ -56,3 +54,5 @@ void DrawScoreBoard(bool _TURN, int _X, int _Y, int cntWinO, int cntLoseO, int c
 void ClearBox(int w, int h, int x, int y);
 void HoverButton(_BUTTON a);
 void UnhoverButton(_BUTTON a, int color);
+void LoadGameInPauseMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool sound[], int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X);
+void DrawSaveFilesPageInPauseMenu(const vector <_BUTTON>& v, int curPage, int filesPerPage);

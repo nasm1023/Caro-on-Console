@@ -1,3 +1,4 @@
+0123456789.txt
 .
 test.txt
 test.txt
