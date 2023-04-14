@@ -5,12 +5,12 @@ D:\Code\Caro\Caro\View.cpp(355,80): warning C4267: 'argument': conversion from '
 D:\Code\Caro\Caro\View.cpp(361,80): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 D:\Code\Caro\Caro\View.cpp(364,80): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 D:\Code\Caro\Caro\View.cpp(552,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-D:\Code\Caro\Caro\View.cpp(622,45): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\Code\Caro\Caro\View.cpp(629,23): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\Code\Caro\Caro\View.cpp(630,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-D:\Code\Caro\Caro\View.cpp(694,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-D:\Code\Caro\Caro\View.cpp(731,38): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\Code\Caro\Caro\View.cpp(737,23): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\Code\Caro\Caro\View.cpp(738,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-D:\Code\Caro\Caro\View.cpp(1281,16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Code\Caro\Caro\View.cpp(613,45): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Code\Caro\Caro\View.cpp(620,23): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Code\Caro\Caro\View.cpp(621,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Code\Caro\Caro\View.cpp(682,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Code\Caro\Caro\View.cpp(734,38): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Code\Caro\Caro\View.cpp(740,23): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Code\Caro\Caro\View.cpp(741,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Code\Caro\Caro\View.cpp(1283,16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   Caro.vcxproj -> D:\Code\Caro\x64\Debug\Caro.exe

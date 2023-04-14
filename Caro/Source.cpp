@@ -7,12 +7,8 @@ _POINT _A[B_SIZE][B_SIZE]; //Ma trận bàn cờ
 bool _TURN; //true là lượt người thứ nhất và false là lượt người thứ hai
 int _COMMAND; // Biến nhận giá trị phím người dùng nhập
 int _X, _Y, cX, cY; //Tọa độ hiện hành trên màn hình bàn cờ
-int cntX;
-int cntO;
-int saveTurn = 0;
-int cntWinO = 0, cntLoseO = 0;
-int cntDraw = 0;
-int cntRound = 1;
+int cntX, cntO, saveTurn = 0, cntWinO = 0, cntLoseO = 0, cntDraw = 0, cntRound = 1;
+float remain;
 bool sound[] = { 1, 1, 1 };
 string NamePlayer_O = "", NamePlayer_X = "";
 
@@ -22,7 +18,7 @@ int main() {
 	changeFont(21);
 	LoadSound(sound);
 	while (true) {
-		MainMenu(_A, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X);
+		MainMenu(_A, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, remain);
 	}
 	return 0;
 }

@@ -208,9 +208,32 @@ bool PauseGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool sound
 				break;
 			if (cur == 1) {
 				//UnhoverButton(button[cur], BLACK);
-				LoadGameInPauseMenu(_A, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X);
+				bool ok = LoadGameInPauseMenu(_A, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, remain, lastPressed);
+				if (ok)
+					return 1;
 				ClearBox(34, 15, 79, 4);
 				//HoverButton(button[cur]);
+			}
+			else if (cur == 0) {
+				string fileName = "lanngu.txt";
+				GotoXY(80, 6);
+				TextColor(BLACK);
+				cout << "Enter file name: ";
+				GotoXY(82, 7);
+				cout << L_TRIANGLE << ' ';
+				HideCursor(0);
+				getline(cin, fileName);
+				HideCursor(1);
+				fileName += ".txt";
+				SaveData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, fileName, remain);
+				GotoXY(87, 10);
+				cout << "SAVED SUCCESSFULLY!";
+				while (true) {
+					char c = toupper(_getch());
+					if (sound[CLICK_SFX]) PlayAudio(CLICK_SFX);
+					break;
+				}
+				ClearBox(34, 15, 79, 4);
 			}
 		}
 	}
@@ -221,10 +244,10 @@ bool PauseGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool sound
 	return ok;
 }
 
-void StartGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND, bool sound[], int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X) {
+void StartGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND, bool sound[], int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X, float& remain) {
 	SetupGame(_A, reset, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, cntRound, NamePlayer_O, NamePlayer_X);
 	bool validEnter = true;
-	float lastPressed = clock(), remain = 15e3;
+	float lastPressed = clock();
 	while (true) {
 		DrawTimer((lastPressed + remain - clock()) / 1000.0, _TURN);
 		if (((lastPressed + remain - clock()) / 1000.0) < 0) {
@@ -239,15 +262,13 @@ void StartGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND
 			if (sound[CLICK_SFX]) PlayAudio(CLICK_SFX);
 			if (_COMMAND == ESC) {
 				bool ok = PauseGame(_A, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, remain, lastPressed);
-				DrawScoreBoard(_TURN, _X, _Y, cntWinO, cntLoseO, cntRound);
 				if (ok)
 					return;
+				DrawScoreBoard(_TURN, _X, _Y, cntWinO, cntLoseO, cntRound);
 				continue;
 			}
 			// Điều khiển
 			int tmp = 0;
-			if (_COMMAND == SPACE)
-				SaveData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, "lanngu.txt");
 			if (_COMMAND == ENTER) {
 				switch (CheckBoard(_A, _TURN, _X, _Y)) {
 				case -1:
@@ -296,9 +317,9 @@ void StartGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND
 	}
 }
 
-bool LoadData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X, string FileName) {
+bool LoadData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X, string FileName, float& remain) {
 	fstream inp;
-	inp.open("save\\data\\" + FileName, ios::in);
+	inp.open("save/data/" + FileName, ios::in);
 	if (inp.fail()) {
 		inp.close();
 		return 0;
@@ -308,7 +329,7 @@ bool LoadData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, in
 		for (int j = 0; j < B_SIZE; j++)
 			inp >> _A[i][j].c;
 	inp >> _TURN >> _COMMAND >> _X >> _Y >> cX >> cY;
-	inp >> cntX >> cntO >> cntWinO >> cntLoseO >> cntDraw >> saveTurn >> cntRound;
+	inp >> cntX >> cntO >> cntWinO >> cntLoseO >> cntDraw >> saveTurn >> cntRound >> remain;
 	inp.ignore();
 	getline(inp, NamePlayer_O);
 	getline(inp, NamePlayer_X);
@@ -316,9 +337,9 @@ bool LoadData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, in
 	return 1;
 }
 
-bool SaveData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X, string FileName) {
+bool SaveData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X, string FileName, float& remain) {
 	fstream out;
-	out.open("save\\data\\" + FileName, ios::out);
+	out.open("save/data/" + FileName, ios::out);
 	if (out.fail()) {
 		out.close();
 		return 0;
@@ -329,8 +350,18 @@ bool SaveData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, in
 		out << endl;
 	}
 	out << _TURN << ' ' << _COMMAND << ' ' << _X << ' ' << _Y << ' ' << cX << ' ' << cY << endl;
-	out << cntX << ' ' << cntO << ' ' << cntWinO << ' ' << cntLoseO << ' ' << cntDraw << ' ' << saveTurn << ' ' << cntRound << endl;
+	out << cntX << ' ' << cntO << ' ' << cntWinO << ' ' << cntLoseO << ' ' << cntDraw << ' ' << saveTurn << ' ' << cntRound << ' ' << remain << endl;
 	out << NamePlayer_O << endl << NamePlayer_X;
+	out.close();
+	out.open("save/all_save.txt", (ios::app) | (ios::in));
+	string s = "";
+	bool ok = 0;
+	fstream inp;
+	inp.open("save/all_save.txt", ios::in);
+	while (inp >> s) 
+		ok |= (s == FileName);
+	if (!ok)
+		out << endl << FileName;
 	out.close();
 	return 1;
 }
