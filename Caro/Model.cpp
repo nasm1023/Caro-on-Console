@@ -135,40 +135,40 @@ int CheckBoard(_POINT _A[B_SIZE][B_SIZE], bool _TURN, int pX, int pY)
 // Hàm bắt đầu game và khởi tạo dữ liệu
 void SetupGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int cntWinO, int cntLoseO, int cntDraw, int& cntRound, string& NamePlayer_O, string& NamePlayer_X) {
 	SetConsoleBlank();
+	unsigned char p = 219;
 	if (reset) {
 		ResetData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO);
 	}
-	ShowTurn(_X, _Y, !_TURN, true);
+	DrawBox(50, 17, 63, 3, LIGHT_MAGENTA, 0);
+	//DrawBox(20, 3, 78, 1, LIGHT_MAGENTA, 0);
+	for (int i = 0; i < 49; i++)
+	{
+		TextColor(MAGENTA);
+		GotoXY(64 + i, 2); cout << H_LINE;
+	}
 	TextColor(BLUE);
-	GotoXY(70, 1);
-	cout << "CARO";
-	GotoXY(70, 2);
-	cout << "ROUND " << cntRound;
-	GotoXY(70, 3);
-	cout << "SCORE";
-	GotoXY(70, 4);
-	cout << "X " << cntLoseO << " : " << cntWinO << " O";
-	/*drawBoxInf(70,110,8,16);*/ //40,8,70,8
-	int wideBox = 45;
-	int highBox = 8;
-	int xBox = 70;
-	int yBox = 8;
-	DrawBoxMini(45, 8, 70, 8, BLUE);
-	GotoXY(xBox + 2, yBox + 3);
-	cout << NamePlayer_O << " O ";
-	GotoXY(xBox + 2, yBox + 6);
-	cout << NamePlayer_X << " X ";
-	GotoXY(xBox + 12, yBox + 1);
-	cout << "STEP";
-	CntTurn(_TURN, cntX, cntO, false); //Hiển thị lượt đánh
-	GotoXY(xBox + 22, yBox + 1);
-	cout << "Win/Lose/Draw";
-	GotoXY(xBox + 25, yBox + 3);
-	cout << cntWinO << "/" << cntLoseO << "/" << cntDraw;
-	GotoXY(xBox + 25, yBox + 6);
-	cout << cntLoseO << "/" << cntWinO << "/" << cntDraw;
-	GotoXY(xBox, yBox + 8);
+	GotoXY(82, 2);
+	cout << " - ROUND " << cntRound << " - ";
+	ShowTurn(_X, _Y, !_TURN, true);
+	TextColor(LIGHT_MAGENTA);
+	DrawNumber(74, 12, cntLoseO, LIGHT_CYAN);
+	DrawNumber(96, 12, cntWinO, LIGHT_CYAN);
+	GotoXY(88, 14); cout << p << p;
+	GotoXY(88, 16); cout << p << p;
+
+	TextColor(LIGHT_MAGENTA);
+	GotoXY(63, 11); cout << BOX_LEFT;
+	for (int i = 0; i < 49; i++)
+	{
+		GotoXY(64 + i, 11);
+		cout << BOX_H_LINE;
+	}
+	cout << BOX_RIGHT;
+	TextColor(BLUE);
+	GotoXY(83, 11); cout << " - SCORE - ";
 	DrawBoard(B_SIZE, B_SIZE, BOARD_X, BOARD_Y, GREEN);
+	DrawBox(46, 9, 65, 20, GREEN, 0);
+	DrawAsciiFile(68 + 2 * 10, 26, "Dot", YELLOW);
 	for (int i = 0; i < B_SIZE; i++)
 		for (int j = 0; j < B_SIZE; j++)
 			if (_A[i][j].c == -1) {
@@ -184,60 +184,79 @@ void SetupGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND
 	HoverCell(_A, cY, cX);
 }
 
+void PauseGame(float& remain, float& lastPressed) {
+	remain += lastPressed - clock();
+	_getch();
+	lastPressed = clock();
+}
+
 void StartGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND, bool sound[], int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X) {
 	SetupGame(_A, reset, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, cntRound, NamePlayer_O, NamePlayer_X);
 	bool validEnter = true;
+	float lastPressed = clock(), remain = 15e3;
 	while (true) {
-		_COMMAND = toupper(_getch());
-		if (sound[CLICK_SFX]) PlaySound(CLICK_SFX);
-		if (_COMMAND == ESC) {
-			return;
+		ShowTimer((lastPressed + remain - clock()) / 1000.0);
+		if (((lastPressed + remain - clock()) / 1000.0) < 0) {
+			ShowTurn(_X, _Y, _TURN, 1);
+			_TURN = !_TURN;
+			remain = 15e3;
+			lastPressed = clock();
 		}
-		// Điều khiển
-		int tmp = 0;
-		if (_COMMAND == SPACE)
-			SaveData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, "lanngu.txt");
-		if (_COMMAND == ENTER) {
-			switch (CheckBoard(_A, _TURN, _X, _Y)) {
-			case -1:
-				GotoXY(_X, _Y);
-				tmp = GetCurrentColor();
-				TextColor(X_COLOR);
-				cout << "X";
-				TextColor(tmp);
-				break;
-			case 1:
-				GotoXY(_X, _Y);
-				tmp = GetCurrentColor();
-				TextColor(O_COLOR);
-				cout << "O";
-				TextColor(tmp);
-				break;
-			case 0:
-				validEnter = false;
-				break;
+		if (_kbhit()) {
+			_COMMAND = toupper(_getch());
+			if (sound[CLICK_SFX]) PlayAudio(CLICK_SFX);
+			if (_COMMAND == ESC) {
+				PauseGame(remain, lastPressed);
+				continue;
 			}
-			ShowTurn(_X, _Y, _TURN, validEnter);
-			CntTurn(_TURN, cntX, cntO, validEnter);
-			if (validEnter == true) {
-				switch (ProcessFinish(_A, _X, _Y, _TURN, TestBoard(_A, saveTurn, cntWinO, cntLoseO, cntDraw, cntRound, CheckWinLose(_A, saveTurn, cX, cY)), NamePlayer_O, NamePlayer_X)) {
+			// Điều khiển
+			int tmp = 0;
+			if (_COMMAND == SPACE)
+				SaveData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, "lanngu.txt");
+			if (_COMMAND == ENTER) {
+				switch (CheckBoard(_A, _TURN, _X, _Y)) {
 				case -1:
+					GotoXY(_X, _Y);
+					tmp = GetCurrentColor();
+					TextColor(X_COLOR);
+					cout << "X";
+					TextColor(tmp);
+					break;
 				case 1:
+					GotoXY(_X, _Y);
+					tmp = GetCurrentColor();
+					TextColor(O_COLOR);
+					cout << "O";
+					TextColor(tmp);
+					break;
 				case 0:
-					if (AskContinue(_A) != 'Y') {
-						return;
-					}
-					else {
-						SetupGame(_A, 1, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, cntRound, NamePlayer_O, NamePlayer_X);
+					validEnter = false;
+					break;
+				}
+				ShowTurn(_X, _Y, _TURN, validEnter);
+				CntTurn(_TURN, cntX, cntO, validEnter);
+				if (validEnter == true) {
+					switch (ProcessFinish(_A, _X, _Y, _TURN, TestBoard(_A, saveTurn, cntWinO, cntLoseO, cntDraw, cntRound, CheckWinLose(_A, saveTurn, cX, cY)), NamePlayer_O, NamePlayer_X)) {
+					case -1:
+					case 1:
+					case 0:
+						if (AskContinue(_A) != 'Y') {
+							return;
+						}
+						else {
+							SetupGame(_A, 1, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, cntRound, NamePlayer_O, NamePlayer_X);
+						}
 					}
 				}
+				validEnter = true;
+				remain = 15e3;
+				lastPressed = clock();
 			}
-			validEnter = true;
+			else if (_COMMAND == 'A') MoveLeft(_A, _X, _Y, cX, cY);
+			else if (_COMMAND == 'W') MoveUp(_A, _X, _Y, cX, cY);
+			else if (_COMMAND == 'S') MoveDown(_A, _X, _Y, cX, cY);
+			else if (_COMMAND == 'D') MoveRight(_A, _X, _Y, cX, cY);
 		}
-		else if (_COMMAND == 'A') MoveLeft(_A, _X, _Y, cX, cY);
-		else if (_COMMAND == 'W') MoveUp(_A, _X, _Y, cX, cY);
-		else if (_COMMAND == 'S') MoveDown(_A, _X, _Y, cX, cY);
-		else if (_COMMAND == 'D') MoveRight(_A, _X, _Y, cX, cY);
 	}
 }
 
@@ -274,7 +293,7 @@ bool SaveData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, in
 		out << endl;
 	}
 	out << _TURN << ' ' << _COMMAND << ' ' << _X << ' ' << _Y << ' ' << cX << ' ' << cY << endl;
-	out << cntX << ' ' << cntO << ' ' << cntWinO << ' ' << cntLoseO << ' ' << cntDraw << ' ' << saveTurn << cntRound << endl;
+	out << cntX << ' ' << cntO << ' ' << cntWinO << ' ' << cntLoseO << ' ' << cntDraw << ' ' << saveTurn << ' ' << cntRound << endl;
 	out << NamePlayer_O << endl << NamePlayer_X;
 	out.close();
 	return 1;
@@ -287,11 +306,11 @@ void LoadSound(bool sound[]) {
 		cout << "Can't open file";
 		return;
 	}
-	int n = sizeof(sound);
+	int n = 3;
 	for (int i = 0; i < n; i++)
 		inp >> sound[i];
 	if (sound[BGM])
-		PlaySound(BGM);
+		PlayAudio(BGM);
 	else
 		StopSound(BGM);
 	inp.close();
@@ -305,17 +324,17 @@ void SetSound(bool sound[], int type, bool value) {
 		return;
 	}
 	sound[type] = value;
-	int n = sizeof(sound);
+	int n = 3;
 	for (int i = 0; i < n; i++)
 		out << sound[i] << ' ';
 	LoadSound(sound);
 	out.close();
 }
 
-void PlaySound(int type) {
+void PlayAudio(int type) {
 	if (type == BGM)
 		mciSendString(L"play assets/sounds/bgm.wav", NULL, 0, NULL);
-		//PlaySound(TEXT("assets/sounds/bgm.wav"), NULL, SND_ASYNC);
+		//PlayAudio(TEXT("assets/sounds/bgm.wav"), NULL, SND_ASYNC);
 	else if (type == CLICK_SFX)
 		//mciSendString(L"play assets/sounds/click_sfx.wav", NULL, 0, NULL);
 		PlaySound(TEXT("assets/sounds/click_sfx.wav"), NULL, SND_ASYNC);

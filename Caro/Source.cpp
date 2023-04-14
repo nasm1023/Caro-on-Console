@@ -17,8 +17,9 @@ bool sound[] = { 1, 1, 1 };
 string NamePlayer_O = "", NamePlayer_X = "";
 
 int main() {
-	HideCursor();
+	HideCursor(1);
 	FixConsoleWindow();
+	changeFont(21);
 	LoadSound(sound);
 	while (true) {
 		MainMenu(_A, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X);

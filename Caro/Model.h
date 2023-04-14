@@ -13,6 +13,6 @@ bool LoadData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, in
 bool SaveData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X, string FileName);
 void LoadSound(bool sound[]);
 void SetSound(bool sound[], int type, bool value);
-void PlaySound(int type);
+void PlayAudio(int type);
 void StopSound(int type);
 void ExitGame();
