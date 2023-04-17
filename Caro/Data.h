@@ -53,6 +53,8 @@ using namespace std;
 // special key
 #define ENTER 13
 #define ESC 27
+#define BACK_SPACE 8
+
 // for drawing the caro table
 #define H_LINE (char)196
 #define V_LINE (char)179
@@ -99,4 +101,8 @@ struct _POINT {
 struct _BUTTON {
 	int x, y;
 	string data;
+};
+
+struct WinningPos {
+	int x, y;
 };
