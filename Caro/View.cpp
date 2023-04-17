@@ -647,7 +647,7 @@ void LoadGameMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool so
 			DrawSaveFilesPage(v, curPage, filesPerPage);
 		}
 		else if (_COMMAND == ENTER) {
-			LoadData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, CleanFileName(v[(curPage - 1) * 9 + curFile].data), remain);
+			LoadData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, CleanFileName(v[(curPage - 1) * filesPerPage + curFile].data), remain);
 			LoadingScreen(BLUE, GREEN, LIGHT_CYAN);
 			StartGame(_A, 0, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, remain, WP);
 			return;
@@ -767,7 +767,7 @@ bool LoadGameInPauseMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, 
 			DrawSaveFilesPageInPauseMenu(v, curPage, filesPerPage);
 		}
 		else if (_COMMAND == ENTER) {
-			LoadData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, CleanFileName(v[(curPage - 1) * 9 + curFile].data), remain);
+			LoadData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, CleanFileName(v[(curPage - 1) * filesPerPage + curFile].data), remain);
 			LoadingScreen(BLUE, GREEN, LIGHT_CYAN);
 			StartGame(_A, 0, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, remain, WP);
 			return 1;
@@ -996,6 +996,8 @@ void MainMenu(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool sound[
 			{
 				EnterNamePlayer(NamePlayer_O, NamePlayer_X);
 				AskTurn(_TURN, sound, NamePlayer_O, NamePlayer_X);
+				cntWinO = cntLoseO = cntDraw = 0;
+				cntRound = 1;
 				StartGame(_A, 1, _TURN, _COMMAND, sound, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, remain, WP);
 				return;
 			}

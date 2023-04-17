@@ -16,8 +16,7 @@ void ResetData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, i
 	_X = _A[0][0].x;
 	_Y = _A[0][0].y;
 	cX = cY = 0;
-	cntX = 0;
-	cntO = 0;
+	cntX = cntO = 0;
 	remain = 15e3;
 }
 
@@ -393,7 +392,7 @@ bool LoadData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, in
 		inp.close();
 		return 0;
 	}
-	ResetData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, remain);
+	//ResetData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, cntRound, remain);
 	for (int i = 0; i < B_SIZE; i++)
 		for (int j = 0; j < B_SIZE; j++)
 			inp >> _A[i][j].c;
