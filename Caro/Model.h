@@ -17,5 +17,5 @@ void PlayAudio(int type);
 void StopSound(int type);
 string CleanFileName(string s);
 bool PauseGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool sound[], int& _X, int& _Y, int& cX, int& cY, int& cntX, int& cntO, int& cntWinO, int& cntLoseO, int& cntDraw, int& saveTurn, int& cntRound, string& NamePlayer_O, string& NamePlayer_X, float& remain, float& lastPressed, WinningPos WP[5]);
-bool EnterName(string& s);
+bool EnterName(string& s, int len);
 void ExitGame();

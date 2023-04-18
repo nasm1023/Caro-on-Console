@@ -9,3 +9,7 @@ ok con de.txt
 ddddddddd.txt
 test board.txt
 test board 2.txt
+ssfgfdgdgdgfdfgdgfdg.txt
+aaaaaaaaaaaaaaaaaaaa.txt
+fadsadsadsadsadsa.txt
+test3.txt

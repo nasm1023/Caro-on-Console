@@ -179,7 +179,7 @@ void SetupGame(_POINT _A[B_SIZE][B_SIZE], bool reset, bool& _TURN, int& _COMMAND
 	DrawGameInfo(_A, _TURN, _X, _Y, cX, cY, cntWinO, cntLoseO, cntRound);
 }
 
-bool EnterName(string& s) {
+bool EnterName(string& s, int len) {
 	char c;
 	while (true) {
 		c = _getch();
@@ -199,7 +199,7 @@ bool EnterName(string& s) {
 				s.pop_back();
 			}
 		}
-		else if (s.size() < 20) {
+		else if (s.size() < len) {
 			cout << c;
 			s += c;
 		}
@@ -287,7 +287,7 @@ bool PauseGame(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, bool sound
 				GotoXY(85, 9);
 				cout << L_TRIANGLE << ' ';
 				HideCursor(0);
-				bool ok = EnterName(fileName);
+				bool ok = EnterName(fileName, 20);
 				if (ok) {
 					fileName += ".txt";
 					SaveData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, saveTurn, cntRound, NamePlayer_O, NamePlayer_X, fileName, remain);
@@ -392,10 +392,13 @@ bool LoadData(_POINT _A[B_SIZE][B_SIZE], bool& _TURN, int& _COMMAND, int& _X, in
 		inp.close();
 		return 0;
 	}
-	//ResetData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, cntWinO, cntLoseO, cntDraw, cntRound, remain);
+	//ResetData(_A, _TURN, _COMMAND, _X, _Y, cX, cY, cntX, cntO, remain);
 	for (int i = 0; i < B_SIZE; i++)
-		for (int j = 0; j < B_SIZE; j++)
+		for (int j = 0; j < B_SIZE; j++) {
 			inp >> _A[i][j].c;
+			_A[i][j].y = i * 2 + 1 + BOARD_Y;
+			_A[i][j].x = j * 4 + 2 + BOARD_X;
+		}
 	inp >> _TURN >> _COMMAND >> _X >> _Y >> cX >> cY;
 	inp >> cntX >> cntO >> cntWinO >> cntLoseO >> cntDraw >> saveTurn >> cntRound >> remain;
 	inp.ignore();

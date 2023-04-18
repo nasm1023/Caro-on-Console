@@ -431,32 +431,34 @@ void EnterNamePlayer(string& NamePlayer_O, string& NamePlayer_X) {
 	TextColor(CYAN);
 	GotoXY(51, 13); cout << " Player 1's Name ";
 	TextColor(RED);
-	GotoXY(48, 15); cout << x;
-	while (true) {
-		GotoXY(53, 15);
-		getline(cin, NamePlayer_O);
-		if (NamePlayer_O.size() <= 20)
-			break;
-		GotoXY(53, 15);
-		for (int i = 0; i < NamePlayer_O.size(); i++)
-			cout << ' ';
-		GotoXY(53, 15);
-	}
+	GotoXY(48, 15); cout << x << ' ';
+	//while (true) {
+	//	GotoXY(53, 15);
+	//	getline(cin, NamePlayer_O);
+	//	if (NamePlayer_O.size() <= 20)
+	//		break;
+	//	GotoXY(53, 15);
+	//	for (int i = 0; i < NamePlayer_O.size(); i++)
+	//		cout << ' ';
+	//	GotoXY(53, 15);
+	//}
+	EnterName(NamePlayer_O, 20);
 	DrawBoxMini(49, 3, 35, 19, GREEN);
 	TextColor(CYAN);
 	GotoXY(51, 18); cout << " Player 2's Name ";
 	TextColor(RED);
-	GotoXY(48, 20); cout << x;
-	while (true) {
-		GotoXY(53, 20);
-		getline(cin, NamePlayer_X);
-		if (NamePlayer_X.size() <= 20)
-			break;
-		GotoXY(53, 20);
-		for (int i = 0; i < NamePlayer_X.size(); i++)
-			cout << ' ';
-		GotoXY(53, 20);
-	}
+	GotoXY(48, 20); cout << x << ' ';
+	//while (true) {
+	//	GotoXY(53, 20);
+	//	getline(cin, NamePlayer_X);
+	//	if (NamePlayer_X.size() <= 20)
+	//		break;
+	//	GotoXY(53, 20);
+	//	for (int i = 0; i < NamePlayer_X.size(); i++)
+	//		cout << ' ';
+	//	GotoXY(53, 20);
+	//}
+	EnterName(NamePlayer_X, 20);
 	HideCursor(1);
 }
 
@@ -1127,18 +1129,6 @@ void LoadingScreen(int color1, int color2, int color3) //color 1 la mau khung, 2
 		cout << s;
 		Sleep(10);
 	}
-}
-
-void CreateConsoleWindow(int pWidth, int pHeight)
-{
-	HWND consoleWindow = GetConsoleWindow();
-	RECT r;
-	HANDLE hConsole;
-
-	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hConsole, 240);
-	GetWindowRect(consoleWindow, &r);
-	MoveWindow(consoleWindow, 0, 0, pWidth, pHeight, TRUE);
 }
 
 void changeFont(int x)

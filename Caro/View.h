@@ -34,7 +34,6 @@ void HelpScreen(bool sound[]);
 void LoadingScreen(int color1, int color2, int color3);
 void PrintNote(int x, int y, int color);
 void DrawCaroBox(int w, int h, int x, int y, int Time);
-void CreateConsoleWindow(int pWidth, int pHeight);
 void SettingMenu(bool sound[]);
 string getFileContents(ifstream& File);
 void VeO1(int x, int y, int color);
