@@ -60,3 +60,4 @@ void DrawXWin();
 void DrawOWin();
 void SetOWin(string NamePlayer_O, WinningPos WP[5], _POINT _A[B_SIZE][B_SIZE]);
 void SetXWin(string NamePlayer_X, WinningPos WP[5], _POINT _A[B_SIZE][B_SIZE]);
+void Draw(int x, int y, string nameFile, int color);
