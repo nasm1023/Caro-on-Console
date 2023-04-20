@@ -292,15 +292,15 @@ void DrawBanner(int x, int y, int color) {
 
 void AskTurn(bool& _TURN, bool sound[], string& NamePlayer_O, string& NamePlayer_X) { // Hỏi lượt đánh trước
 	SetConsoleBlank();
-	DrawBoxMini(63, 18, 32, 8, GREEN);//vẽ khung to
+	DrawBoxMini(72, 20, 27, 8, GREEN);//vẽ khung to
 	// Vẽ hai ô hiển thị O vs X
 	int wide = 20;
 	int high = 10;
 	int x = 20;
 	int y = 10;
 	DrawAsciiFile(0, 1, "DrawTurn", BLUE);
-	VeO1(43, 17, GRAY);
-	VeX1(76, 17, GRAY);
+	Draw(41, 15, "XTurn", GRAY);
+	Draw(72, 15, "OTurn", GRAY);
 	// Vẽ ô hiển thị tên
 	int WideBoxName = 30;
 	int HighBoxName = 3;
@@ -367,22 +367,22 @@ void AskTurn(bool& _TURN, bool sound[], string& NamePlayer_O, string& NamePlayer
 	}
 	GotoXY(x, y);
 	//DrawAsciiFile(x + wide / 2, y + high / 2 - 2, "DrawTurnO", BLUE);
-	VeO2(43, 17, O_COLOR);
+	/*VeO2(43, 17, O_COLOR);*/
 	while (true) {
 		unsigned char c = toupper(_getch());
 		if (sound[CLICK_SFX]) PlayAudio(CLICK_SFX);
 		if (c == 'A' || c == 'D') {
 			if (c == 'A') {
 				if (x == 50) {
-					VeO2(43, 17, O_COLOR);
-					VeX1(76, 17, GRAY);
+					Draw(41, 15, "XTurn", GRAY);
+					Draw(72, 15, "OTurnC", O_COLOR);
 					x -= 30;
 				}
 			}
 			else if (c == 'D') {
 				if (x == 20) {
-					VeO1(43, 17, GRAY);
-					VeX2(76, 17, X_COLOR);
+					Draw(41, 15, "XTurnC", X_COLOR);
+					Draw(72, 15, "OTurn", GRAY);
 					x += 30;
 				}
 			}
