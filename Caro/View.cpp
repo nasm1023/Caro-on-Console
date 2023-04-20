@@ -2362,3 +2362,17 @@ void SetXWin(string NamePlayer_X, WinningPos WP[5], _POINT _A[B_SIZE][B_SIZE]) {
 		}
 	}
 }
+
+void Draw(int x, int y, string nameFile, int color) {
+	TextColor(color);
+	SetConsoleOutputCP(65001);
+	ifstream Read("assets/UI/" + nameFile + ".txt");
+	string line = "";
+	for (int i = 0; Read.good(); i++) {
+		getline(Read, line);
+		GotoXY(x - (i == 0), y + i);
+		cout << line;
+	}
+	Read.close();
+	SetConsoleOutputCP(437);
+}
